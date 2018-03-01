@@ -1,0 +1,28 @@
+<RCC>
+    <qresource prefix="/res">
+        <file>img/about-us.png</file>
+        <file>img/arrowdown.png</file>
+        <file>img/arrowright.png</file>
+        <file>img/arrowup.png</file>
+        <file>img/cancel.png</file>
+        <file>img/close.png</file>
+        <file>img/error.png</file>
+        <file>img/list.png</file>
+        <file>img/list2.png</file>
+        <file>img/medical-history.png</file>
+        <file>img/right-arrow.png</file>
+        <file>img/road-intersection-sign.png</file>
+        <file>img/t-junction.png</file>
+        <file>img/traffic-light.png</file>
+        <file>img/traffic-light2.png</file>
+        <file>img/traffic-light3.png</file>
+        <file>img/ic_videocam_white_24dp_2x.png</file>
+        <file>img/ic_open_in_new_black_24dp_2x.png</file>
+        <file>img/ic_edit_white_24dp_2x.png</file>
+        <file>img/ic_save_white_24dp_2x.png</file>
+        <file>img/ic_folder_open_white_24dp_2x.png</file>
+        <file>img/pause.png</file>
+        <file>img/play-button.png</file>
+        <file>img/stop.png</file>
+    </qresource>
+</RCC>

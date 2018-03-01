@@ -1,0 +1,116 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+
+#include <QLabel>
+#include <QPixmap>
+#include <QTimer>
+
+QTimer *timer;
+int cGo = 20;
+int cStop = 25;
+int wait = 4;
+
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+
+//    button4 = new QPushButton("Info V4", this);
+//    connect(button4, SIGNAL(clicked()), this, SLOT())
+
+    QPixmap closeBtn("C:/Users/Randolph D/thesis1/img/error.png");
+    ui->labelClose->setPixmap(closeBtn.scaled(50, 50, Qt::KeepAspectRatio));
+
+    QPixmap pix("C:/Users/Randolph D/Pictures/Screenshots/a1.png");
+    int w = ui->label1->width();
+    int h = ui->label1->height();
+    ui->label1->setPixmap(pix.scaled(w, h, Qt::KeepAspectRatio));
+
+    QPixmap pix2("C:/Users/Randolph D/Pictures/Screenshots/a2.png");
+    ui->label2->setPixmap(pix2.scaled(w, h, Qt::KeepAspectRatio));
+
+    QPixmap pix3("C:/Users/Randolph D/Pictures/Screenshots/a3.png");
+    ui->label3->setPixmap(pix3.scaled(w, h, Qt::KeepAspectRatio));
+
+    QPixmap pix4("C:/Users/Randolph D/Pictures/Screenshots/a4.png");
+    ui->label4->setPixmap(pix4.scaled(w, h, Qt::KeepAspectRatio));
+
+
+    // Timer (Traffic light)
+    timer = new QTimer(this);
+    timer->setInterval(1000);
+    connect(timer, SIGNAL(timeout()), this, SLOT(timer_timeoutgo1()));
+    timer->start();
+
+//    timer = new QTimer(this);
+//    timer->setInterval(1000);
+//    connect(timer, SIGNAL(timeout()), this, SLOT(timer_timewait1()));
+//    timer->start();
+
+    timer = new QTimer(this);
+    timer->setInterval(1000);
+    connect(timer, SIGNAL(timeout()), this, SLOT(timer_timestop1()));
+    timer->start();
+
+}
+
+void MainWindow::timer_timeoutgo1() {
+    cGo--;
+    ui->go1->display(cGo);
+        if (cGo > 0) {
+            ui->labelv1->setStyleSheet("QLabel {"
+                                       "background-color: rgb(24, 180, 42);"
+                                       "color: white;"
+                                       "}");
+            ui->label1->setStyleSheet("QLabel {"
+                                     "border: 2px solid rgb(24, 180, 42);;"
+                                     "}");
+        } else {
+            ui->go1->display(0);
+            ui->labelv1->setStyleSheet("QLabel {"
+                                       "background-color: #222;"
+                                       "border-radius: 5px;"
+                                       "}");
+            ui->label1->setStyleSheet("QLabel {"
+                                     "background-color: black;"
+                                     "}");
+        }
+}
+
+void MainWindow::timer_timewait1() {
+    wait--;
+    if (wait > 0) {
+        ui->wait1->display(wait);
+    } else {
+        ui->wait1->display(0);
+    }
+}
+
+void MainWindow::timer_timestop1() {
+        cStop--;
+        ui->stop2->display(cStop);
+        if (cStop > 0) {
+            ui->labelv2->setStyleSheet("QLabel {"
+                                       "background-color: rgb(255, 0 ,0);"
+                                       "}");
+        } else {
+            ui->stop2->display(0);
+            ui->labelv2->setStyleSheet("QLabel {"
+                                       "background-color: #222;"
+                                       "border-radius: 5px;"
+                                       "}");
+        }
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+
+
+void MainWindow::on_info4_clicked()
+{
+
+}

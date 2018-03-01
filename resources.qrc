@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/rec">
+        <file>img/about-us.png</file>
+        <file>img/arrowdown.png</file>
+        <file>img/arrowleft.jpg</file>
+        <file>img/arrowright.png</file>
+        <file>img/arrowup.png</file>
+        <file>img/cancel.png</file>
+        <file>img/close.png</file>
+        <file>img/error.png</file>
+        <file>img/medical-history.png</file>
+        <file>img/right-arrow.png</file>
+        <file>img/road-intersection-sign.png</file>
+        <file>img/t-junction.png</file>
+        <file>img/traffic-light.png</file>
+    </qresource>
+</RCC>
