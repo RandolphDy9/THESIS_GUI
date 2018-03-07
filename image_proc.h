@@ -11,62 +11,66 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/objdetect.hpp>
-#
-#define SCALE_FACTOR 1.1
 
-#define CLASSIFIER_FW_PATH  "C:\\img\\haar\\myhaar-2424-11.xml"
-#define CLASSIFIER_M_PATH   "C:\\img\\haar\\myhaar-m2424-7.xml"//FINAL-MT.xml
-#define CLASSIFIER_T_PATH   "C:\\img\\haar\\myhaar-tr-5.xml"
 
-#define CLASSIFIER_NIGHT_FW_PATH  "C:\\img\\haar\\myhaar-n2424-3.xml"
-#define CLASSIFIER_NIGHT_MT_PATH   "C:\\img\\haar\\classifier-n-MT.xml"
-#define CLASSIFIER_NIGHT_T_PATH   "C:\\img\\haar\\classifier-n-TR.xml"
+#define CLASSIFIER_FW_PATH_1  "C:\\img\\haar\\low_reso_classifiers\\myhaar-fw-12.xml"
+#define CLASSIFIER_FW_PATH_2  "C:\\img\\haar\\low_reso_classifiers\\myhaar-CDU1616.xml"
+#define CLASSIFIER_FW_PATH_3  "C:\\img\\haar\\low_reso_classifiers\\myhaar-CDU2424.xml"
+#define CLASSIFIER_FW_PATH_4  "C:\\img\\haar\\low_reso_classifiers\\myhaar-pmall2424.xml"
+#define CLASSIFIER_M_PATH   "C:\\img\\haar\\low_reso_classifiers\\myhaar-mt-8.xml"
+#define CLASSIFIER_T_PATH   "C:\\img\\haar\\low_reso_classifiers\\myhaar-t2424-6.xml" //TRUCK_2.xml
 
-#define CLASSIFIER_FW_LOWLIGHT "C:\\img\\haar\\myhaar-low-light.xml"
-#define FW_AREA 303
+#define CLASSIFIER_NIGHT_FW_PATH  "C:\\img\\haar\\myhaar-n2424-4.xml"
+#define CLASSIFIER_NIGHT_MT_PATH   "C:\\img\\haar\\myhaar-nm2424-3.xml"
+#define CLASSIFIER_NIGHT_T_PATH   "C:\\img\\haar\\low_reso_classifiers\\TRUCK_N_1.xml"
+
+#define CLASSIFIER_FW_LOWLIGHT "C:\\img\\haar\\low_reso_classifiers\\TRUCK_N_1.xml"
+#define FW_AREA 303 //303
 #define MT_AREA 151
 #define TR_AREA 377
 
 #define M2_TO_F2 10.761
-#define DEFAULT_TOTAL_AREA_OA_CEBU 5454
-#define DEFAULT_TOTAL_AREA_EO_BUS 6051
-#define DEFAULT_TOTAL_AREA_EO_CDU 9446
-#define DEFAULT_TOTAL_AREA_OA_PARKMALL 8152
+#define DEFAULT_TOTAL_AREA_OA_CEBU 7123 //7850  //5454
+#define DEFAULT_TOTAL_AREA_EO_BUS 4617 //6397 ////6051
+#define DEFAULT_TOTAL_AREA_EO_CDU 4302 //5967 ////9446
+#define DEFAULT_TOTAL_AREA_OA_PARKMALL 6835 //9491////8152
 
-#define DEFAULT_TOTAL_AREA_PACIFIC_MCB 4401
-#define DEFAULT_TOTAL_AREA_PACIFIC_JPR 3166
-#define DEFAULT_TOTAL_AREA_PACIFIC_UNA 2740
+#define DEFAULT_TOTAL_AREA_PACIFIC_MCB 2142
+#define DEFAULT_TOTAL_AREA_PACIFIC_JPR 2448
+#define DEFAULT_TOTAL_AREA_PACIFIC_UNA 3366
 
-#define LOW_PERCENT 0.333333
-#define MOD_PERCENT 0.666666
+#define LOW_PERCENT 0.33
+#define MOD_PERCENT 0.66
 
-#define DEFAULT_SNR_AREA_OA_CEBU_LOW 2967
-#define DEFAULT_SNR_AREA_OA_CEBU_MOD 5935
-#define DEFAULT_SNR_AREA_OA_CEBU_HIGH 600
+#define MAX_NEIGHBOR_DAY_FW 15
+#define MAX_NEIGHBOR_NIGHT_FW 15
 
-#define DEFAULT_SNR_AREA_EO_BUS_LOW 2016
-#define DEFAULT_SNR_AREA_EO_BUS_MOD 4033
-#define DEFAULT_SNR_AREA_EO_BUS_HIGH 600
+#define MAX_NEIGHBOR_DAY_MT 20
+#define MAX_NEIGHBOR_NIGHT_MT 10
 
-#define DEFAULT_SNR_AREA_OA_PARKMALL_LOW  3090
-#define DEFAULT_SNR_AREA_OA_PARKMALL_MOD 6181
-#define DEFAULT_SNR_AREA_OA_PARKMALL_HIGH 1686
+#define MAX_NEIGHBOR_DAY_TR 20
+#define MAX_NEIGHBOR_NIGHT_TR 15
 
-#define DEFAULT_SNR_AREA_EO_CDU_LOW 3148
-#define DEFAULT_SNR_AREA_EO_CDU_MOD 6297
-#define DEFAULT_SNR_AREA_EO_CDU_HIGH 321
 
-#define DEFAULT_AREA_PACIFIC_MCB_LOW 1055
-#define DEFAULT_AREA_PACIFIC_MCB_MOD 2110
-#define DEFAULT_AREA_PACIFIC_MCB_HIGH 440
+#define SCALE_FACTOR_DETECTOR 1.1
+#define SCALE_FACTOR_TRUCK 1.1
+#define SCALE_FACTOR_MOTOR 1.1
 
-#define DEFAULT_AREA_PACIFIC_JPR_LOW 913
-#define DEFAULT_AREA_PACIFIC_JPR_MOD 1826
-#define DEFAULT_AREA_PACIFIC_JPR_HIGH 316
+#define FW_MAX_B 500,500
+#define MT_MAX_B 150,200
+#define TR_MAX_B 2000,2000
 
-#define DEFAULT_AREA_PACIFIC_UNA_LOW 1467
-#define DEFAULT_AREA_PACIFIC_UNA_MOD 2934
-#define DEFAULT_AREA_PACIFIC_UNA_HIGH 274
+#define FW_MIN_B 32,32
+#define MT_MIN_B 32,64
+#define TR_MIN_B 250,250
+
+#define FW_MAX_T 300,300
+#define MT_MAX_T 150,200
+#define TR_MAX_T 2000,2000
+
+#define FW_MIN_T 32,32
+#define MT_MIN_T 32,64
+#define TR_MIN_T 250,250
 
 typedef struct ProcessedFrame
 {
@@ -87,9 +91,9 @@ typedef struct CropImageCoordinates
 }CROP_COORDINATES_t;
 typedef struct DetectionConfig
 {
-    cv::CascadeClassifier classifierFW;
-    cv::CascadeClassifier classifierMT;
-    cv::CascadeClassifier classifierTR;
+    cv::CascadeClassifier classifierFW[4];
+    cv::CascadeClassifier classifierMT[4];
+    cv::CascadeClassifier classifierTR[4];
 
     cv::CascadeClassifier classifierFW_n;
     cv::CascadeClassifier classifierMT_n;
@@ -125,7 +129,7 @@ private:
     cv::Mat matFrameOriginal[4];
     cv::Mat matFrameProcessed[4];
     cv::Mat matFrameDraw[4];
-
+    cv::Mat *bgr;
     cv::VideoCapture *stream[4];
 
     CropImageCoordinates crop;
@@ -153,7 +157,13 @@ private:
     void cvtQimage();
     void createMask();
 
+    bool t_flag = false;
+    bool b_flag = false;
+    bool low_reso = false;
     std::vector<int> skip_these;
+    cv::Size min_fw,min_tr,min_mt,max_fw,max_tr,max_mt;
+
+
 public:
     explicit OpenCvWorker(QObject *parent = 0);
     ~OpenCvWorker();
@@ -182,6 +192,8 @@ public slots:
     void receiveClassifierPath(QString,int);
     void receiveFlagROI();
     void receiveChangeInMinMax(int _min_size, int _max_size, int id);
+    void receiveEnableT();
+    void receiveEnableB();
 };
 
 #endif // IMAGE_PROC_H

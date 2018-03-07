@@ -135,6 +135,8 @@ signals:
     void sendClassifierPath(QString, int);
     void sendReceiveFlagROI();
     void sendChangeInMinMax(int,int,int);
+    void sendEnableTjunctionClassifier();
+    void sendEnableBoxjunctionClassifier();
 private slots:
     void receiveFrame(ProcessedFrame* outputFrames);
     void sendSetup();
@@ -181,14 +183,6 @@ private slots:
     void on_classifierMTpath_clicked();
     void addValues(QString id, QString rn, QString ar, int td, QString ts, QString eg); // THIS IS AN UPDATE
 
-
-    void on_verticalSlider_valueChanged(int value);
-
-    void on_verticalSlider_2_valueChanged(int value);
-
-    void on_minSpinBox_valueChanged(int arg1);
-
-    void on_maxSpinBox_valueChanged(int arg1);
 
     void on_sim1_clicked();
 

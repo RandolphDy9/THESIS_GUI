@@ -1,7 +1,6 @@
 #include "image_proc.h"
 #include "roi_hci.hpp"
-#define SCALE_FACTOR_DETECTOR 1.1
-#define SCALE_FACTOR_TRUCK 1.2
+
 OpenCvWorker::OpenCvWorker(QObject *parent) :
     QObject(parent),
     toggleStream(false),
@@ -11,7 +10,8 @@ OpenCvWorker::OpenCvWorker(QObject *parent) :
     classifier_flag_fw(false),
     classifier_flag_mt(false),
     classifier_flag_tr(false),
-    flag_receive_roi(false)
+    flag_receive_roi(false),
+    low_reso(false)
 
 {
     src1="";
@@ -28,9 +28,9 @@ OpenCvWorker::OpenCvWorker(QObject *parent) :
     crop = {};
     cfg = {};
 
-    cfg.classifierFW.load(CLASSIFIER_FW_PATH);
-    cfg.classifierMT.load(CLASSIFIER_M_PATH);
-    cfg.classifierTR.load(CLASSIFIER_T_PATH);
+//    cfg.classifierFW.load(CLASSIFIER_FW_PATH);
+//    cfg.classifierMT.load(CLASSIFIER_M_PATH);
+//    cfg.classifierTR.load(CLASSIFIER_T_PATH);
 
     cfg.classifierFW_n.load(CLASSIFIER_NIGHT_FW_PATH);
     cfg.classifierMT_n.load(CLASSIFIER_NIGHT_MT_PATH);
@@ -38,18 +38,13 @@ OpenCvWorker::OpenCvWorker(QObject *parent) :
 
 
     cfg.resizeMultiplier = 1;
-    cfg.maxSize_fw = cv::Size(300,300);
-    cfg.minSize_fw = cv::Size(24,24);
 
-    cfg.maxSize_tr = cv::Size(1200,1200);
-    cfg.minSize_tr = cv::Size(48,48);
-
-    cfg.maxSize_mt = cv::Size(300,300);
-    cfg.minSize_mt = cv::Size(16,24);
 
     cfg.toggleDetect = true;
 
     night_flag = false;
+
+    bgr = new cv::Mat[3];
 
     outputFrames = new ProcessedFrame();
     qRegisterMetaType(outputFrames);
@@ -142,15 +137,86 @@ void OpenCvWorker::receiveToggleStream(bool stream)
 }
 void OpenCvWorker::process()
 {
-//    QMutexLocker locker(&m_mutex);
-    static std::vector<cv::Rect> rectFW, rectTR, rectMT,nMT;
-//    rectFW = new std::vector<cv::Rect>();
-//    rectTR = new std::vector<cv::Rect>();
-//    rectMT = new std::vector<cv::Rect>();
+
+
+
+    static std::vector<cv::Rect> rectFW, rectTR, rectMT,nMT,nFW,nTR;
     cv::Mat skipFrame;
 
     for(int i = 0; i < 4; i++)
     {
+        if(t_flag){
+            switch(i){
+            case 0:
+                max_fw = cv::Size(500,500);
+                max_mt = cv::Size(64,64);
+                max_tr = cv::Size(1000,1000);
+
+                min_fw = cv::Size(4,4);
+                min_mt = cv::Size(16,16);
+                min_tr = cv::Size(200,200);
+                break;
+            case 1:
+                max_fw = cv::Size(500,500);
+                max_mt = cv::Size(200,200);
+                max_tr = cv::Size(1000,1000);
+
+                min_fw = cv::Size(70,70);
+                min_mt = cv::Size(24,24);
+                min_tr = cv::Size(120,120);
+                break;
+            case 2:
+                max_fw = cv::Size(1000,1000);
+                max_mt = cv::Size(200,200);
+                max_tr = cv::Size(1000,1000);
+
+                min_fw = cv::Size(70,70);
+                min_mt = cv::Size(64,64);
+                min_tr = cv::Size(200,200);
+                break;
+
+            }
+        }else{
+            switch(i){
+            case 0:
+                max_fw = cv::Size(500,500);
+                max_mt = cv::Size(300,300);
+                max_tr = cv::Size(553,553);
+
+                min_fw = cv::Size(64,64);
+                min_mt = cv::Size(24,24);
+                min_tr = cv::Size(304,304);
+                break;
+            case 1:
+                max_fw = cv::Size(500,500);
+                max_mt = cv::Size(200,200);
+                max_tr = cv::Size(1280,1280);
+
+                min_fw = cv::Size(70,70);
+                min_mt = cv::Size(48,48);
+                min_tr = cv::Size(248,248);
+                break;
+            case 2:
+                max_fw = cv::Size(500,500);
+                max_mt = cv::Size(200,200);
+                max_tr = cv::Size(1280,1280);
+
+                min_fw = cv::Size(24,24);
+                min_mt = cv::Size(48,48);
+                min_tr = cv::Size(242,242);
+                break;
+            case 3:
+                max_fw = cv::Size(1000,1000);
+                max_mt = cv::Size(200,200);
+                max_tr = cv::Size(430,430);
+
+                min_fw = cv::Size(64,64);
+                min_mt = cv::Size(64,64);
+                min_tr = cv::Size(180,180);
+                break;
+
+            }
+        }
         if(matFrameDraw[i].empty() == false && matFrameOriginal[i].empty() == false)
         {
 
@@ -166,16 +232,23 @@ void OpenCvWorker::process()
             if(night_flag == false)
                 cv::equalizeHist(matFrameProcessed[i],matFrameProcessed[i]);
             if(classifier_flag_fw == true){
-                if(cfg.classifierFW.empty() == false)
+                if(cfg.classifierFW[i].empty() == false)
                 {
                     if(night_flag == false){
-                        cfg.classifierFW.detectMultiScale(matFrameProcessed[i],rectFW,SCALE_FACTOR_DETECTOR,15,
-                                                          0 | CV_HAAR_SCALE_IMAGE,cfg.minSize_fw,cfg.maxSize_fw);
-                    }else{
-                        cfg.classifierFW_n.detectMultiScale(matFrameProcessed[i],rectFW,SCALE_FACTOR_DETECTOR,20,
-                                                            0 | CV_HAAR_SCALE_IMAGE,cfg.minSize_fw,cfg.maxSize_fw);
-                    }
 
+                            cfg.classifierFW[i].detectMultiScale(matFrameProcessed[i],rectFW,SCALE_FACTOR_DETECTOR,15,
+                                                              0 | CV_HAAR_SCALE_IMAGE,min_fw,max_fw);
+                    }else{
+
+                        if(low_reso == true)
+                            cfg.classifierFW_n.detectMultiScale(matFrameProcessed[i],rectFW,SCALE_FACTOR_DETECTOR,20,
+                                                                0 | CV_HAAR_SCALE_IMAGE,cv::Size(32,32),cv::Size(150,150));
+                        else
+                            cfg.classifierFW_n.detectMultiScale(matFrameProcessed[i],rectFW,SCALE_FACTOR_DETECTOR,20,
+                                                                0 | CV_HAAR_SCALE_IMAGE,cv::Size(70,70),cv::Size(200,200));
+                    }
+                    std::vector<int> del_f;
+                    del_f.clear();
                     outputFrames->numberOfFW[i] = rectFW.size();
                     if(toggleDebug == true){
                         for(int j = 0; j < rectFW.size() ;j++)
@@ -199,24 +272,47 @@ void OpenCvWorker::process()
                                 break;
                             }
 
-
-                            cv::rectangle(matFrameDraw[i],(rectFW)[j],cv::Scalar(0,0,255),8);
+                            cv::Point center = cv::Point(rectMT[j].x + rectMT[j].width/2, rectMT[j].y + rectMT[j].height/2);
+                            cv::Point br_thresh = cv::Point(rectMT[j].br().x, rectMT[j].br().y - 15);
+                            for(int fw_size = 0; fw_size < rectFW.size(); fw_size++){
+                                if(rectFW[fw_size].contains(rectFW[j].br()) == true && rectFW[fw_size].contains(rectFW[j].tl()) == true && j != fw_size){
+                                    del_f.push_back(j);
+                                }
+                            }
 
 
                         }
+
+                        nFW = rectFW;
+                        for(int k = 0; k < del_f.size();k++){
+                            nFW.at(del_f[k]).x = 0;
+                            nFW.at(del_f[k]).y = 0;
+                        }
+
+                        for(int k = 0; k < nFW.size();k++){
+                            if(nFW[k].x == 0 && nFW[k].y == 0){
+                                outputFrames->numberOfFW[i] --;
+                            }else
+                                cv::rectangle(matFrameDraw[i],(rectFW)[k],cv::Scalar(0,0,255),8);
+                        }
+
+
+
                     }
 
                 }
+            }else{
+                outputFrames->numberOfFW[i] = 0;
             }
             if(classifier_flag_mt == true){
-                if(cfg.classifierMT.empty() == false)
+                if(cfg.classifierMT[i].empty() == false)
                 {
                     if(night_flag == false){
-                        cfg.classifierMT.detectMultiScale(matFrameProcessed[i],rectMT,1.3,15,
-                                                          0 | CV_HAAR_SCALE_IMAGE,cfg.minSize_mt,cfg.maxSize_mt);
+                        cfg.classifierMT[i].detectMultiScale(matFrameProcessed[i],rectMT,SCALE_FACTOR_MOTOR,MAX_NEIGHBOR_DAY_MT,
+                                                          0 | CV_HAAR_SCALE_IMAGE,min_mt,max_mt);
                     }else{
-                        cfg.classifierMT_n.detectMultiScale(matFrameProcessed[i],rectMT,1.3,15,
-                                                            0 | CV_HAAR_SCALE_IMAGE,cfg.minSize_mt,cfg.maxSize_mt);
+                        cfg.classifierMT_n.detectMultiScale(matFrameProcessed[i],rectMT,SCALE_FACTOR_MOTOR,MAX_NEIGHBOR_NIGHT_MT,
+                                                            0 | CV_HAAR_SCALE_IMAGE,cv::Size(100,100),cv::Size(300,300));
                     }
                     outputFrames->numberOfMT[i] = rectMT.size();
                     nMT.clear();
@@ -245,18 +341,13 @@ void OpenCvWorker::process()
                                 break;
                             }
                             cv::Point center = cv::Point(rectMT[j].x + rectMT[j].width/2, rectMT[j].y + rectMT[j].height/2);
-
+                            cv::Point br_thresh = cv::Point(rectMT[j].br().x, rectMT[j].br().y - 15);
                             for(int fw_size = 0; fw_size < rectFW.size(); fw_size++){
 
                                 if(rectFW[fw_size].contains(center) == true){
                                     del_i.push_back(j);
-
                                 }
                             }
-
-
-
-
                         }
                         nMT = rectMT;
                         for(int k = 0; k < del_i.size();k++){
@@ -274,16 +365,18 @@ void OpenCvWorker::process()
                     }
 
                 }
+            }else{
+                outputFrames->numberOfMT[i] = 0;
             }
 
             if(classifier_flag_tr == true){
-                if(cfg.classifierTR.empty() == false){
+                if(cfg.classifierTR[i].empty() == false){
                     if(night_flag == false){
-                        cfg.classifierTR.detectMultiScale(matFrameProcessed[i],rectTR,SCALE_FACTOR_TRUCK,10,
-                                                          0 | CV_HAAR_SCALE_IMAGE,cfg.minSize_tr,cfg.maxSize_tr);
+                        cfg.classifierTR[i].detectMultiScale(matFrameProcessed[i],rectTR,SCALE_FACTOR_TRUCK,MAX_NEIGHBOR_DAY_TR,
+                                                          0 | CV_HAAR_SCALE_IMAGE,min_tr,max_tr);
                     }else{
-                        cfg.classifierMT_n.detectMultiScale(matFrameProcessed[i],rectMT,SCALE_FACTOR_TRUCK,10,
-                                                            0 | CV_HAAR_SCALE_IMAGE,cfg.minSize_mt,cfg.maxSize_mt);
+                        cfg.classifierMT_n.detectMultiScale(matFrameProcessed[i],rectMT,SCALE_FACTOR_TRUCK,MAX_NEIGHBOR_NIGHT_TR,
+                                                            0 | CV_HAAR_SCALE_IMAGE,min_tr,max_tr);
                     }
                     outputFrames->numberOfTR[i] = rectTR.size();
                     if(toggleDebug == true){
@@ -307,29 +400,44 @@ void OpenCvWorker::process()
                                 (rectTR)[j].y += crop.y4[0];
                                 break;
                             }
-                            cv::rectangle(matFrameDraw[i],(rectTR)[j],cv::Scalar(255,0,0),8);
+                            for(int k = 0; k < rectFW.size();k++){
+                                cv::Point tr_center = cv::Point(rectFW[k].x + rectFW[k].width/2, rectFW[k].y + rectFW[k].height/2);
+                                if(rectTR[j].contains(tr_center)){
+                                    rectTR[j].x = 0;
+                                    rectTR[j].y = 0;
+                                }
+                            }
                         }
+                        for(int k = 0; k < rectTR.size();k++){
+                            if(rectTR[k].x == 0 && rectTR[k].y == 0){
+                                outputFrames->numberOfTR[i] --;
+                            }else{
+                                rectangle(matFrameDraw[i],rectTR[k],cv::Scalar(255,0,0),8);
+                            }
+                        }
+
                     }
 
                 }
+            }else{
+                outputFrames->numberOfTR[i] = 0;
             }
         }
 
     }
-//    cvtQimage();
-//    emit sendFrame(outputFrames);
+
 
 }
 void OpenCvWorker::receiveSetupCFG(DetectionConfig _cfg)
 {
 
-    cfg.maxSize_fw = _cfg.maxSize_fw;
-    cfg.maxSize_mt = _cfg.maxSize_mt;
-    cfg.maxSize_tr = _cfg.maxSize_tr;
+//    cfg.maxSize_fw = _cfg.maxSize_fw;
+//    cfg.maxSize_mt = _cfg.maxSize_mt;
+//    cfg.maxSize_tr = _cfg.maxSize_tr;
 
-    cfg.minSize_fw = _cfg.minSize_fw;
-    cfg.minSize_mt = _cfg.minSize_mt;
-    cfg.minSize_tr = _cfg.minSize_tr;
+//    cfg.minSize_fw = _cfg.minSize_fw;
+//    cfg.minSize_mt = _cfg.minSize_mt;
+//    cfg.minSize_tr = _cfg.minSize_tr;
 
 }
 void OpenCvWorker::cvtQimage()
@@ -453,41 +561,51 @@ void OpenCvWorker::createMask()
             qDebug() << matFrameOriginal[0].rows;
             jpROI->pSrc1.at(1).x = matFrameOriginal[0].cols;
             jpROI->pSrc1.at(2).x = matFrameOriginal[0].cols;
+            low_reso = true;
         }
         if(matFrameOriginal[0].rows != jpROI->pSrc1.at(2).y){
             jpROI->pSrc1.at(2).y = matFrameOriginal[0].rows;
             jpROI->pSrc1.at(3).y = matFrameOriginal[0].rows;
+            low_reso = true;
         }
 
         if(matFrameOriginal[1].cols != jpROI->pSrc2.at(2).x){
             jpROI->pSrc2.at(1).x = matFrameOriginal[1].cols;
             jpROI->pSrc2.at(2).x = matFrameOriginal[1].rows;
+            low_reso = true;
         }
         if(matFrameOriginal[1].rows != jpROI->pSrc2.at(2).y){
             jpROI->pSrc2.at(2).y = matFrameOriginal[1].rows;
             jpROI->pSrc2.at(3).y = matFrameOriginal[1].rows;
+            low_reso = true;
         }
 
 
         if(matFrameOriginal[2].cols != jpROI->pSrc3.at(2).x){
             jpROI->pSrc3.at(1).x = matFrameOriginal[2].cols;
             jpROI->pSrc3.at(2).x = matFrameOriginal[2].cols;
+            low_reso = true;
         }
         if(matFrameOriginal[1].rows != jpROI->pSrc3.at(2).y){
             jpROI->pSrc3.at(2).y = matFrameOriginal[2].rows;
             jpROI->pSrc3.at(3).y = matFrameOriginal[2].rows;
+            low_reso = true;
         }
 
         if(matFrameOriginal[3].cols != jpROI->pSrc4.at(2).x){
             jpROI->pSrc4.at(1).x = matFrameOriginal[3].cols;
             jpROI->pSrc4.at(2).x = matFrameOriginal[3].cols;
+            low_reso = true;
         }
         if(matFrameOriginal[3].rows != jpROI->pSrc4.at(2).y){
             jpROI->pSrc4.at(2).y = matFrameOriginal[3].rows;
             jpROI->pSrc4.at(3).y = matFrameOriginal[3].rows;
+            low_reso = true;
         }
+
         cfg.minSize_fw = cv::Size(24,24);
     }else{
+        low_reso = false;
         cfg.minSize_fw = cv::Size(64,64);
     }
 
@@ -891,27 +1009,27 @@ void OpenCvWorker::receiveClassifierTRenable(bool _enabled)
 void OpenCvWorker::receiveClassifierPath(QString _path, int _type)
 {
     QMutexLocker locker(&m_mutex);
-    if(_type == 0){
-        if(night_flag)
-            cfg.classifierFW_n.load(_path.toStdString());
-        else
-            cfg.classifierFW.load(_path.toStdString());
-        return;
-    }
-    if(_type == 1){
-        if(night_flag)
-            cfg.classifierTR_n.load(_path.toStdString());
-        else
-            cfg.classifierTR.load(_path.toStdString());
-        return;
-    }
-    if(_type == 2){
-        if(night_flag)
-            cfg.classifierMT_n.load(_path.toStdString());
-        else
-            cfg.classifierMT.load(_path.toStdString());
-        return;
-    }
+//    if(_type == 0){
+//        if(night_flag)
+//            cfg.classifierFW_n.load(_path.toStdString());
+//        else
+//            cfg.classifierFW.load(_path.toStdString());
+//        return;
+//    }
+//    if(_type == 1){
+//        if(night_flag)
+//            cfg.classifierTR_n.load(_path.toStdString());
+//        else
+//            cfg.classifierTR.load(_path.toStdString());
+//        return;
+//    }
+//    if(_type == 2){
+//        if(night_flag)
+//            cfg.classifierMT_n.load(_path.toStdString());
+//        else
+//            cfg.classifierMT.load(_path.toStdString());
+//        return;
+//    }
 }
 
 void OpenCvWorker::receiveFlagROI()
@@ -963,4 +1081,63 @@ void OpenCvWorker::cleanBoundingBox(std::vector<Rect> &fw, std::vector<Rect> &mt
 
 
 
+}
+
+void OpenCvWorker::receiveEnableB()
+{
+    QMutexLocker locker(&m_mutex);
+    b_flag = true;
+    t_flag = false;
+
+    max_fw = cv::Size(FW_MAX_B);
+    max_mt = cv::Size(MT_MAX_B);
+    max_tr = cv::Size(TR_MAX_B);
+
+    min_fw = cv::Size(FW_MIN_B);
+    min_mt = cv::Size(MT_MIN_B);
+    min_tr = cv::Size(TR_MIN_B);
+
+    cfg.classifierFW[0].load(CLASSIFIER_FW_PATH_1);
+    cfg.classifierFW[1].load(CLASSIFIER_FW_PATH_2);
+    cfg.classifierFW[2].load(CLASSIFIER_FW_PATH_3);
+    cfg.classifierFW[3].load(CLASSIFIER_FW_PATH_4);
+
+    cfg.classifierMT[0].load(CLASSIFIER_M_PATH);
+    cfg.classifierMT[1].load(CLASSIFIER_M_PATH);
+    cfg.classifierMT[2].load(CLASSIFIER_M_PATH);
+    cfg.classifierMT[3].load(CLASSIFIER_M_PATH);
+
+    cfg.classifierTR[0].load(CLASSIFIER_T_PATH);
+    cfg.classifierTR[1].load(CLASSIFIER_T_PATH);
+    cfg.classifierTR[2].load(CLASSIFIER_T_PATH);
+    cfg.classifierTR[3].load(CLASSIFIER_T_PATH);
+
+}
+void OpenCvWorker::receiveEnableT()
+{
+    QMutexLocker locker(&m_mutex);
+    t_flag = true;
+    b_flag = false;
+    min_fw = cv::Size(FW_MIN_T);
+    min_tr = cv::Size(TR_MIN_T);
+    min_mt = cv::Size(MT_MIN_T);
+    max_fw = cv::Size(FW_MAX_T);
+    max_tr = cv::Size(TR_MAX_T);
+    max_mt = cv::Size(MT_MAX_T);
+
+
+    cfg.classifierFW[0].load(CLASSIFIER_FW_PATH_4);
+    cfg.classifierFW[1].load(CLASSIFIER_FW_PATH_4);
+    cfg.classifierFW[2].load(CLASSIFIER_FW_PATH_4);
+
+    cfg.classifierMT[0].load(CLASSIFIER_M_PATH);
+    cfg.classifierMT[1].load(CLASSIFIER_M_PATH);
+    cfg.classifierMT[2].load(CLASSIFIER_M_PATH);
+    //cfg.classifierMT[3].load(CLASSIFIER_M_PATH);
+
+    cfg.classifierTR[0].load(CLASSIFIER_T_PATH);
+    cfg.classifierTR[1].load(CLASSIFIER_T_PATH);
+    cfg.classifierTR[2].load(CLASSIFIER_T_PATH);
+    //cfg.classifierTR[3].load(CLASSIFIER_FW_PATH_4);
+    //cfg.classifierFW[3].load(CLASSIFIER_FW_PATH_4);
 }

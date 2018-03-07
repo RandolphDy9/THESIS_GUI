@@ -85,16 +85,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->listWidget->addItem(" ");
     ui->listWidget->addItem(" ");
 
-    ui->minSpinBox->hide();
-    ui->maxSpinBox->hide();
-    ui->verticalSlider->hide();
-    ui->verticalSlider_2->hide();
-    ui->radioFW->hide();
-    ui->radioMT->hide();
-    ui->radioTR->hide();
-    ui->setMinMax->hide();
-    ui->label_3->hide();
-    ui->label_4->hide();
+
     //ui->submitArea->hide();
 
     v1_area = DEFAULT_TOTAL_AREA_OA_CEBU;
@@ -220,118 +211,6 @@ void MainWindow::timer_data() {
 }
 
 
-
-//void MainWindow::timer_data() {
-
-//    if(mydb.open()) {
-
-//    }
-//    QString query = "CREATE TABLE traffic ("
-//                    "ID VARCHAR(5),"
-//                    "road_name VARCHAR(40),"
-//                    "actual_roi_area VARCHAR(40),"
-//                    "traffic_density VARCHAR(40),"
-//                    "traffic_status VARCHAR(40),"
-//                    "estimated_go VARCHAR(10),"
-//                    "date_time DATETIME);";
-//    QSqlQuery qry;
-//    qry.exec(query);
-
-//    if(!qry.exec(query)) {
-
-//    }
-
-//    if (click > 0) {
-//        if (ifBox == 1 && playing == 1) {
-//            if (cebu_low == 1) {
-//                addValues("V1", "Quano Ave. (Cebu Bound)", "8,903", "LOW", "19"); cebu_low = 0;
-//            } else if (cebu_mod == 1) {
-//                addValues("V1", "Quano Ave. (Cebu Bound)", "8,903", "MODERATE", "27"); cebu_mod = 0;
-//            } else if (cebu_high == 1) {
-//                addValues("V1", "Quano Ave. (Cebu Bound)", "8,903", "HEAVY", "51"); cebu_high = 0;
-//            }
-//            if (bus_low == 1) {
-//                addValues("V2", "E.O. Perez (Terminal Bound)", "6,051", "LOW", "19"); bus_low = 0;
-//            } else if (bus_mod == 1) {
-//                addValues("V2", "E.O. Perez (Terminal Bound)", "6,051", "MODERATE", "27"); bus_mod = 0;
-//            } else if (bus_high == 1) {
-//                addValues("V2", "E.O. Perez (Terminal Bound)", "6,051", "HEAVY", "51"); bus_high = 0;
-//            }
-//            if (cdu_low == 1) {
-//                addValues("V3", "E.O. Perez (CDU Bound)", "9,446", "LOW", "19"); cdu_low = 0;
-//            } else if (cdu_mod == 1) {
-//                addValues("V3", "E.O. Perez (CDU Bound)", "9,446", "MODERATE", "27"); cdu_mod = 0;
-//            } else if (cdu_high == 1) {
-//                addValues("V3", "E.O. Perez (CDU Bound)", "9,446", "HEAVY", "51"); cdu_high = 0;
-//            }
-//            if (pmall_low == 1) {
-//                addValues("V4", "Quano Ave. (Parkmall Bound)", "12,217", "LOW", "19"); pmall_low = 0;
-//            } else if (pmall_mod == 1) {
-//                addValues("V4", "Quano Ave. (Parkmall Bound)", "12,217", "MODERATE", "27"); pmall_mod = 0;
-//            } else if (pmall_high == 1) {
-//                addValues("V4", "Quano Ave. (Parkmall Bound)", "12,217", "HIGH", "51"); pmall_high = 0;
-//            }
-
-
-//        } else if (ifT == 1 && playing == 1) {
-//            if (mcb_low == 1) {
-//                addValues("V1", "M.C. Briones", "2,740", "LOW", "19"); mcb_low = 0;
-//            } else if (mcb_mod == 1) {
-//                addValues("V1", "M.C. Briones", "2,740", "MODERATE", "27"); mcb_mod = 0;
-//            } else if (mcb_high == 1) {
-//                addValues("V1", "M.C. Briones", "2,740", "HEAVY", "51"); mcb_high = 0;
-//            }
-//            if (jpr_low == 1) {
-//                addValues("V2", "J.P. Rizal", "3,166", "LOW", "19"); jpr_low = 0;
-//            } else if (jpr_mod == 1) {
-//                addValues("V2", "J.P. Rizal", "3,166", "MODERATE", "27"); jpr_mod = 0;
-//            } else if (jpr_high == 1) {
-//                addValues("V2", "J.P. Rizal", "3,166", "HEAVY", "51"); jpr_high = 0;
-//            }
-//            if (una_low == 1) {
-//                addValues("V3", "U.N. Avenue", "4,401", "LOW", "19"); una_low = 0;
-//            } else if (una_mod == 1) {
-//                addValues("V3", "U.N. Avenue", "4,401", "MODERATE", "27"); una_mod = 0;
-//            } else if (una_high == 1) {
-//                addValues("V3", "U.N. Avenue", "4,401", "HEAVY", "51"); una_high = 0;
-//            }
-
-//        }
-//        ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-//        QSqlTableModel *model = new QSqlTableModel(this,mydb);
-//        model->setTable("traffic");
-//        model->select();
-//        ui->tableView->setModel(model);
-//        ui->tableView->show();
-
-//    }
-
-//}
-
-//void MainWindow::addValues(QString id, QString rn, QString ar, QString ts, QString eg) {
-//        QSqlQuery queryIn;
-//        queryIn.prepare("INSERT INTO traffic (ID, road_name, actual_roi_area, traffic_density, traffic_status,  estimated_go, date_time) "
-//                       "VALUES (:ID, :rName, :aRoi, :tDensity, :tStatus, :eGo, :dTime)");
-//        queryIn.bindValue(":ID", id);
-//        queryIn.bindValue(":rName", rn);
-//        queryIn.bindValue(":aRoi", ar);
-//        if (((cebu_low || cebu_mod || cebu_high) == 1) || ((una_low || una_mod || una_high) == 1)) {
-//            queryIn.bindValue(":tDensity", total_area_l1);
-//        } else if (((bus_low || bus_mod || bus_high) == 1) || (jpr_low || jpr_mod || jpr_high) == 1) {
-//            queryIn.bindValue(":tDensity", total_area_l2);
-//        } else if (((cdu_low || cdu_mod || cdu_high) == 1) || (mcb_low || mcb_mod || mcb_high) == 1) {
-//            queryIn.bindValue(":tDensity", total_area_l3);
-//        } else if ((pmall_low || pmall_mod || pmall_high) == 1) {
-//            queryIn.bindValue(":tDensity", total_area_l4);
-//        }
-//        queryIn.bindValue(":tStatus", ts);
-//        queryIn.bindValue(":eGo", eg);
-//        queryIn.bindValue(":dTime", QDateTime::currentDateTime());
-//        if (!queryIn.exec()) {
-
-//        }
-//}
 
 void MainWindow::showTime()
 {
@@ -1432,6 +1311,7 @@ void MainWindow::on_selectInt_clicked()
     ui->arrDown->hide(); ui->arrLeft->hide(); ui->arrRight->hide(); ui->arrUp->hide();
 
     if (ui->radioTjunc->isChecked()) {
+        emit sendEnableTjunctionClassifier();
         ui->src1->show(); ui->src2->show(); ui->src3->show(); ui->src4->hide();
         ui->labelv1->hide();ui->labelv2->hide();ui->labelv3->hide(); ui->labelv4->hide();
         ui->labelv1_t->show(); ui->labelv2_t->show(); ui->labelv3_t->show();
@@ -1464,6 +1344,7 @@ void MainWindow::on_selectInt_clicked()
         QMessageBox::information(this, "Success!", "T - junction has been selected!");
 
     } else if (ui->radioBoxed->isChecked()) {
+        emit sendEnableBoxjunctionClassifier();
         ui->src1->show(); ui->src2->show(); ui->src3->show(); ui->src4->show();
         ui->labelv1->show();ui->labelv2->show();ui->labelv3->show(); ui->labelv4->show();
         ui->labelv1_t->hide(); ui->labelv2_t->hide(); ui->labelv3_t->hide();
@@ -1601,6 +1482,8 @@ void MainWindow::setup()
     connect(this,SIGNAL(sendClassifierPath(QString,int)),worker,SLOT(receiveClassifierPath(QString,int)));
     connect(this,SIGNAL(sendReceiveFlagROI()),worker,SLOT(receiveFlagROI()));
     connect(this,SIGNAL(sendChangeInMinMax(int,int,int)),worker,SLOT(receiveChangeInMinMax(int,int,int)));
+    connect(this,SIGNAL(sendEnableTjunctionClassifier()),worker,SLOT(receiveEnableT()));
+    connect(this,SIGNAL(sendEnableBoxjunctionClassifier()),worker,SLOT(receiveEnableB()));
     createMask();
     workerTrigger->start();
     worker->moveToThread(thread);
@@ -1842,32 +1725,13 @@ void MainWindow::on_sim1_clicked(bool checked)
     emit sendToggleDebug();
 
     if(flagInfoToggle == true){
-        //ui->submitArea->hide();
-        ui->minSpinBox->hide();
-        ui->maxSpinBox->hide();
-        ui->verticalSlider->hide();
-        ui->verticalSlider_2->hide();
-        ui->radioFW->hide();
-        ui->radioMT->hide();
-        ui->radioTR->hide();
-        ui->label_3->hide();
-        ui->label_4->hide();
-        ui->setMinMax->hide();
+
 
         flagInfoToggle = false;
     } else {
 
         //ui->submitArea->show();
-        ui->minSpinBox->show();
-        ui->maxSpinBox->show();
-        ui->verticalSlider->show();
-        ui->verticalSlider_2->show();
-        ui->radioFW->show();
-        ui->radioMT->show();
-        ui->radioTR->show();
-        ui->label_3->show();
-        ui->label_4->show();
-        ui->setMinMax->show();
+
         flagInfoToggle = true;
     }
     if (ifBox == 1) {
@@ -1876,10 +1740,7 @@ void MainWindow::on_sim1_clicked(bool checked)
         ui->v3_total_area->setEnabled(true);
         ui->v4_total_area->setEnabled(true);
         if(flagInfoToggle == true){
-            ui->v1_total_area->setReadOnly(false);
-            ui->v2_total_area->setReadOnly(false);
-            ui->v3_total_area->setReadOnly(false);
-            ui->v4_total_area->setReadOnly(false);
+
             ui->countFW->show();    ui->countMT->show();    ui->countTR->show();
             ui->countFW_2->show();  ui->countMT_2->show();  ui->countTR_2->show();
             ui->countFW_3->show();  ui->countMT_3->show();  ui->countTR_3->show();
@@ -1901,10 +1762,7 @@ void MainWindow::on_sim1_clicked(bool checked)
 
     } else if (ifT == 1) {
         if(flagInfoToggle == true){
-            ui->v1_total_area->setReadOnly(false);
-            ui->v2_total_area->setReadOnly(false);
-            ui->v3_total_area->setReadOnly(false);
-            ui->v4_total_area->setReadOnly(true);
+
             ui->countFW->show();    ui->countMT->show();    ui->countTR->show();
             ui->countFW_2->show();  ui->countMT_2->show();  ui->countTR_2->show();
             ui->countFW_3->show();  ui->countMT_3->show();  ui->countTR_3->show();
@@ -2294,7 +2152,7 @@ void MainWindow::receiveDensityUpdateRequest()
                 }
 
                 if(total_area_l2 < v2_area * LOW_PERCENT){
-                    sprintf(buff,"V2 - SNR (Terminal): LOW (%.2f%)",(float)((float)total_area_l2/v2_area)*100);
+                    sprintf(buff,"V2 - SNR (Terminal): LOW (%.0f%)",(float)((float)total_area_l2/v2_area)*100);
                     ui->listWidget->item(1)->setText(QString(buff));
                     //ui->est_go2->display(19);
 
@@ -2302,7 +2160,7 @@ void MainWindow::receiveDensityUpdateRequest()
                     bus_mod = 0;
                     bus_high = 0;
                 }else if(total_area_l2 > v2_area * LOW_PERCENT && total_area_l2 < v2_area * MOD_PERCENT){
-                     sprintf(buff,"V2 - SNR (Terminal): MOD (%.2f%)",(float)((float)total_area_l2/v2_area)*100);
+                     sprintf(buff,"V2 - SNR (Terminal): MOD (%.0f%)",(float)((float)total_area_l2/v2_area)*100);
                     ui->listWidget->item(1)->setText(QString(buff));
                     //ui->est_go2->display(27);
 
@@ -2310,7 +2168,7 @@ void MainWindow::receiveDensityUpdateRequest()
                     bus_mod = 1;
                     bus_high = 0;
                 }else if(total_area_l2  > v2_area * MOD_PERCENT){
-                     sprintf(buff,"V2 - SNR (Terminal): HIGH (%.2f%)",(float)((float)total_area_l2/v2_area)*100);
+                     sprintf(buff,"V2 - SNR (Terminal): HIGH (%.0f%)",(float)((float)total_area_l2/v2_area)*100);
                     ui->listWidget->item(1)->setText(QString(buff));
                     //ui->est_go2->display(51);
                     bus_low = 0;
@@ -2319,7 +2177,7 @@ void MainWindow::receiveDensityUpdateRequest()
                 }
 
                 if((total_area_l3 ) < v3_area * LOW_PERCENT){
-                    sprintf(buff,"V3 - SNR (CDU): LOW (%.2f%)",(float)((float)total_area_l3/v3_area)*100 );
+                    sprintf(buff,"V3 - SNR (CDU): LOW (%.0f%)",(float)((float)total_area_l3/v3_area)*100 );
                     ui->listWidget->item(2)->setText(QString(buff));
 
                     //ui->est_go3->display(19);
@@ -2327,7 +2185,7 @@ void MainWindow::receiveDensityUpdateRequest()
                     cdu_high = 0;
                     cdu_low = 1;
                 }else if((total_area_l3 ) > v3_area * LOW_PERCENT && total_area_l3 < v3_area * MOD_PERCENT){
-                    sprintf(buff,"V3 - SNR (CDU): MOD (%.2f%)",(float)((float)total_area_l3/v3_area)*100 );
+                    sprintf(buff,"V3 - SNR (CDU): MOD (%.0f%)",(float)((float)total_area_l3/v3_area)*100 );
                     ui->listWidget->item(2)->setText(QString(buff));
 
                     //ui->est_go3->display(27);
@@ -2335,7 +2193,7 @@ void MainWindow::receiveDensityUpdateRequest()
                     cdu_mod = 1;
                     cdu_high = 0;
                 }else if((total_area_l3 ) > v3_area * MOD_PERCENT){
-                    sprintf(buff,"V3 - SNR (CDU): HIGH (%.2f%)",(float)((float)total_area_l3/v3_area)*100 );
+                    sprintf(buff,"V3 - SNR (CDU): HIGH (%.0f%)",(float)((float)total_area_l3/v3_area)*100 );
                     ui->listWidget->item(2)->setText(QString(buff));
 
                     //ui->est_go3->display(51);
@@ -2345,7 +2203,7 @@ void MainWindow::receiveDensityUpdateRequest()
                 }
 
                 if((total_area_l4 ) < v4_area * LOW_PERCENT){
-                    sprintf(buff,"V4 - SNR (Parkmall): LOW (%.2f%)",(float)((float)total_area_l4/v4_area)*100 );
+                    sprintf(buff,"V4 - SNR (Parkmall): LOW (%.0f%)",(float)((float)total_area_l4/v4_area)*100 );
                     ui->listWidget->item(3)->setText(QString(buff));
 
                     //ui->est_go4->display(19);
@@ -2353,7 +2211,7 @@ void MainWindow::receiveDensityUpdateRequest()
                     pmall_mod = 0;
                     pmall_high = 0;
                 }else if((total_area_l4 ) > v4_area * LOW_PERCENT && total_area_l4 < v4_area * MOD_PERCENT){
-                    sprintf(buff,"V4 - SNR (Parkmall): MOD (%.2f%)",(float)((float)total_area_l4/v4_area)*100 );
+                    sprintf(buff,"V4 - SNR (Parkmall): MOD (%.0f%)",(float)((float)total_area_l4/v4_area)*100 );
                     ui->listWidget->item(3)->setText(QString(buff));
 
                     //ui->est_go4->display(27);
@@ -2361,7 +2219,7 @@ void MainWindow::receiveDensityUpdateRequest()
                     pmall_high = 0;
                     pmall_low = 0;
                 }else if((total_area_l4 ) > v4_area * MOD_PERCENT){
-                    sprintf(buff,"V4 - SNR (Parkmall): HIGH (%.2f%)",(float)((float)total_area_l4/v4_area)*100 );
+                    sprintf(buff,"V4 - SNR (Parkmall): HIGH (%.0f%)",(float)((float)total_area_l4/v4_area)*100 );
                     ui->listWidget->item(3)->setText(QString(buff));
 
                     //ui->est_go4->display(51);
@@ -2373,7 +2231,7 @@ void MainWindow::receiveDensityUpdateRequest()
             } else {
 
                 if((total_area_l3 )  < v3_areat * LOW_PERCENT){
-                    sprintf(buff,"V2 PACIFIC (MCB): LOW (%.2f%)",(float)((float)total_area_l3/v3_areat)*100 );
+                    sprintf(buff,"V2 PACIFIC (MCB): LOW (%.0f%)",(float)((float)total_area_l3/v3_areat)*100 );
                     ui->listWidget->item(2)->setText(QString(buff));
 
                     //ui->est_go3->display(19);
@@ -2381,7 +2239,7 @@ void MainWindow::receiveDensityUpdateRequest()
                     mcb_high = 0;
                     mcb_mod = 0;
                 }else if((total_area_l3 ) > v3_areat * LOW_PERCENT && total_area_l3 < v3_areat * MOD_PERCENT){
-                    sprintf(buff,"V2 PACIFIC (MCB): MOD (%.2f%)",(float)((float)total_area_l3/v3_areat)*100 );
+                    sprintf(buff,"V2 PACIFIC (MCB): MOD (%.0f%)",(float)((float)total_area_l3/v3_areat)*100 );
                     ui->listWidget->item(2)->setText(QString(buff));
 
                     //ui->est_go3->display(19);
@@ -2389,7 +2247,7 @@ void MainWindow::receiveDensityUpdateRequest()
                     mcb_low = 0;
                     mcb_high = 0;
                 }else if((total_area_l3 ) > v3_areat * MOD_PERCENT){
-                    sprintf(buff,"V2 PACIFIC (MCB): HIGH (%.2f%)",(float)((float)total_area_l3/v3_areat)*100 );
+                    sprintf(buff,"V2 PACIFIC (MCB): HIGH (%.0f%)",(float)((float)total_area_l3/v3_areat)*100 );
                     ui->listWidget->item(2)->setText(QString(buff));
 
                     mcb_high = 1;
@@ -2398,7 +2256,7 @@ void MainWindow::receiveDensityUpdateRequest()
                 }
 
                 if((total_area_l2 ) < v2_areat * LOW_PERCENT){
-                    sprintf(buff,"V2 PACIFIC (JPR): LOW (%.2f%)",(float)((float)total_area_l2/v2_areat)*100 );
+                    sprintf(buff,"V2 PACIFIC (JPR): LOW (%.0f%)",(float)((float)total_area_l2/v2_areat)*100 );
                     ui->listWidget->item(1)->setText(QString(buff));
 
                     jpr_low = 1;
@@ -2406,14 +2264,14 @@ void MainWindow::receiveDensityUpdateRequest()
                     jpr_mod = 0;
 
                 }else if((total_area_l2 ) > v2_areat * LOW_PERCENT && total_area_l2 < v2_areat *MOD_PERCENT){
-                    sprintf(buff,"V2 PACIFIC (JPR): MOD (%.2f%)",(float)((float)total_area_l2/v2_areat)*100 );
+                    sprintf(buff,"V2 PACIFIC (JPR): MOD (%.0f%)",(float)((float)total_area_l2/v2_areat)*100 );
                     ui->listWidget->item(1)->setText(QString(buff));
 
                     jpr_mod = 1;
                     jpr_high = 0;
                     jpr_low = 0;
                 }else if((total_area_l2 ) > v2_areat * MOD_PERCENT){
-                    sprintf(buff,"V2 PACIFIC (JPR): HIGH (%.2f%)",(float)((float)total_area_l2/v2_areat)*100 );
+                    sprintf(buff,"V2 PACIFIC (JPR): HIGH (%.0f%)",(float)((float)total_area_l2/v2_areat)*100 );
                     ui->listWidget->item(1)->setText(QString(buff));
 
                     jpr_high = 1;
@@ -2422,21 +2280,21 @@ void MainWindow::receiveDensityUpdateRequest()
                 }
 
                 if((total_area_l1 ) < v1_areat * LOW_PERCENT){
-                    sprintf(buff,"V1 PACIFIC (UNA): LOW (%.2f%)",(float)((float)total_area_l1/v1_areat)*100 );
+                    sprintf(buff,"V1 PACIFIC (UNA): LOW (%.0f%)",(float)((float)total_area_l1/v1_areat)*100 );
                     ui->listWidget->item(0)->setText(QString(buff));
 
                     una_low = 1;
                     una_high = 0;
                     una_mod = 0;
                 }else if((total_area_l1 ) > v1_areat * LOW_PERCENT && total_area_l1 < v1_areat * MOD_PERCENT){
-                    sprintf(buff,"V1 PACIFIC (UNA): MOD (%.2f%)",(float)((float)total_area_l1/v1_areat)*100 );
+                    sprintf(buff,"V1 PACIFIC (UNA): MOD (%.0f%)",(float)((float)total_area_l1/v1_areat)*100 );
                     ui->listWidget->item(0)->setText(QString(buff));
 
                     una_mod = 1;
                     una_high = 0;
                     una_low = 0;
                 }else if((total_area_l1 ) > v1_areat * MOD_PERCENT){
-                    sprintf(buff,"V1 PACIFIC (UNA): HIGH (%.2f%)",(float)((float)total_area_l1/v1_areat)*100 );
+                    sprintf(buff,"V1 PACIFIC (UNA): HIGH (%.0f%)",(float)((float)total_area_l1/v1_areat)*100 );
                     ui->listWidget->item(0)->setText(QString(buff));
                     una_low = 0;
                     una_mod = 0;
@@ -2480,29 +2338,6 @@ void MainWindow::on_classifierMTpath_clicked()
 }
 
 
-void MainWindow::on_verticalSlider_valueChanged(int value)
-{
-    min_size = value;
-    ui->minSpinBox->setValue(min_size);
-}
-
-void MainWindow::on_verticalSlider_2_valueChanged(int value)
-{
-    max_size = value;
-    ui->maxSpinBox->setValue(max_size);
-}
-
-void MainWindow::on_minSpinBox_valueChanged(int arg1)
-{
-    min_size = arg1;
-    ui->verticalSlider->setValue(arg1);
-}
-
-void MainWindow::on_maxSpinBox_valueChanged(int arg1)
-{
-    max_size = arg1;
-    ui->verticalSlider_2->setValue(arg1);
-}
 
 void MainWindow::on_sim1_clicked()
 {
@@ -2511,18 +2346,7 @@ void MainWindow::on_sim1_clicked()
 
 void MainWindow::on_setMinMax_clicked()
 {
-    if(ui->radioFW->isChecked()){
-        emit sendChangeInMinMax(min_size,max_size,0);
-        return;
-    }
-    if(ui->radioMT->isChecked()){
-        emit sendChangeInMinMax(min_size,max_size,1);
-        return;
-    }
-    if(ui->radioTR->isChecked()){
-        emit sendChangeInMinMax(min_size,max_size,2);
-        return;
-    }
+
 }
 
 void MainWindow::on_submitArea_clicked()

@@ -5062,148 +5062,6 @@ border-right: 1px solid #333;</string>
          <set>Qt::AlignCenter</set>
         </property>
        </widget>
-       <widget class="QSlider" name="verticalSlider">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>290</y>
-          <width>22</width>
-          <height>160</height>
-         </rect>
-        </property>
-        <property name="maximum">
-         <number>1280</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-       <widget class="QSlider" name="verticalSlider_2">
-        <property name="geometry">
-         <rect>
-          <x>60</x>
-          <y>290</y>
-          <width>22</width>
-          <height>160</height>
-         </rect>
-        </property>
-        <property name="maximum">
-         <number>1280</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="minSpinBox">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>470</y>
-          <width>42</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);</string>
-        </property>
-        <property name="maximum">
-         <number>1280</number>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="maxSpinBox">
-        <property name="geometry">
-         <rect>
-          <x>60</x>
-          <y>470</y>
-          <width>42</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);</string>
-        </property>
-        <property name="maximum">
-         <number>1280</number>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_3">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>450</y>
-          <width>41</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>min size</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_4">
-        <property name="geometry">
-         <rect>
-          <x>60</x>
-          <y>450</y>
-          <width>41</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>max size</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="setMinMax">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>500</y>
-          <width>75</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);</string>
-        </property>
-        <property name="text">
-         <string>Set</string>
-        </property>
-       </widget>
-       <widget class="QWidget" name="verticalLayoutWidget_2">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>210</y>
-          <width>81</width>
-          <height>80</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="radioButtonMinMax">
-         <item>
-          <widget class="QRadioButton" name="radioFW">
-           <property name="text">
-            <string>FW</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioMT">
-           <property name="text">
-            <string>MT</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioTR">
-           <property name="text">
-            <string>TR</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
        <widget class="QLabel" name="label_51">
         <property name="geometry">
          <rect>
@@ -5269,7 +5127,7 @@ border-bottom: 1px solid #333;</string>
          <rect>
           <x>1720</x>
           <y>540</y>
-          <width>51</width>
+          <width>41</width>
           <height>21</height>
          </rect>
         </property>
@@ -5966,21 +5824,12 @@ border-top: 1px solid #333;</string>
        <zorder>label_37</zorder>
        <zorder>leg_v4</zorder>
        <zorder>label_41</zorder>
-       <zorder>label_34</zorder>
        <zorder>label_35</zorder>
        <zorder>leg_name1</zorder>
        <zorder>leg_name2</zorder>
        <zorder>leg_name3</zorder>
        <zorder>label_30</zorder>
        <zorder>label_32</zorder>
-       <zorder>verticalSlider</zorder>
-       <zorder>verticalSlider_2</zorder>
-       <zorder>minSpinBox</zorder>
-       <zorder>maxSpinBox</zorder>
-       <zorder>label_3</zorder>
-       <zorder>label_4</zorder>
-       <zorder>setMinMax</zorder>
-       <zorder>verticalLayoutWidget_2</zorder>
        <zorder>label_51</zorder>
        <zorder>label_52</zorder>
        <zorder>label_53</zorder>
@@ -6000,6 +5849,7 @@ border-top: 1px solid #333;</string>
        <zorder>leg_v4go_6</zorder>
        <zorder>leg_v4go_7</zorder>
        <zorder>label_75</zorder>
+       <zorder>label_34</zorder>
       </widget>
       <widget class="QWidget" name="page_3">
        <widget class="QGroupBox" name="groupBox">
@@ -6018,11 +5868,11 @@ border-radius: 8px;</string>
         <property name="title">
          <string>USER LOGIN</string>
         </property>
-        <widget class="QLineEdit" name="lineEdit_pass">
+        <widget class="QLineEdit" name="lineEdit_user">
          <property name="geometry">
           <rect>
            <x>100</x>
-           <y>120</y>
+           <y>70</y>
            <width>291</width>
            <height>31</height>
           </rect>
@@ -6034,7 +5884,7 @@ border-radius: 8px;</string>
           <string notr="true">border: .5px solid white;</string>
          </property>
          <property name="echoMode">
-          <enum>QLineEdit::Password</enum>
+          <enum>QLineEdit::Normal</enum>
          </property>
          <property name="cursorMoveStyle">
           <enum>Qt::LogicalMoveStyle</enum>
@@ -6073,17 +5923,20 @@ border-radius: 5px;</string>
           <string>Login</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="lineEdit_user">
+        <widget class="QLineEdit" name="lineEdit_pass">
          <property name="geometry">
           <rect>
            <x>100</x>
-           <y>70</y>
+           <y>110</y>
            <width>291</width>
            <height>31</height>
           </rect>
          </property>
          <property name="styleSheet">
           <string notr="true">border: .5px solid white;</string>
+         </property>
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
          </property>
          <property name="placeholderText">
           <string/>
@@ -6118,8 +5971,8 @@ border-radius: 5px;</string>
           <string>TextLabel</string>
          </property>
         </widget>
-        <zorder>lineEdit_pass</zorder>
         <zorder>lineEdit_user</zorder>
+        <zorder>lineEdit_pass</zorder>
         <zorder>login</zorder>
         <zorder>label</zorder>
         <zorder>label_2</zorder>
@@ -6386,7 +6239,7 @@ background-color: #333;</string>
    </hints>
   </connection>
   <connection>
-   <sender>lineEdit_user</sender>
+   <sender>lineEdit_pass</sender>
    <signal>returnPressed()</signal>
    <receiver>login</receiver>
    <slot>click()</slot>
@@ -6402,7 +6255,7 @@ background-color: #333;</string>
    </hints>
   </connection>
   <connection>
-   <sender>lineEdit_pass</sender>
+   <sender>lineEdit_user</sender>
    <signal>returnPressed()</signal>
    <receiver>login</receiver>
    <slot>click()</slot>
