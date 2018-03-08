@@ -256,9 +256,11 @@ private:
 
     int trigMan = 0;
     int trun1, trun2, trun3 = 0;
+    int trunw1, trunw2, trunw3 = 0; // CHANGED HERE
     int tFlag1, tFlag2, tFlag3 = 0;
 
     int brun1, brun2, brun3, brun4 = 0;
+    int brunw1, brunw2, brunw3, brunw4 = 0; // CHANGED HERE
     int bFlag1, bFlag2, bFlag3, bFlag4 = 0;
 
     int vidCount = 0;
@@ -293,6 +295,10 @@ private:
     v3_areat = DEFAULT_TOTAL_AREA_PACIFIC_MCB;
 
     uint average_countl1[3],average_countl2[3],average_countl3[3],average_countl4[3];
+
+
+    int activate_areas_legend;  // CHANGED HERE
+    int activate_debug_btn;
 
 };
 
