@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // For Database
 
     mydb = QSqlDatabase::addDatabase("QSQLITE");
-    mydb.setDatabaseName("C:/Users/ERDT Research/Desktop/Traffic_GUI2/db/trafficdb.sqlite");
+    mydb.setDatabaseName("C:/Users/Randolph D/Traffic_GUI2/db/trafficdb.sqlite");
 
     tData = new QTimer(this);
     connect(tData, SIGNAL(timeout()), this, SLOT(timer_data()));
@@ -254,9 +254,8 @@ void MainWindow::exportTableViewToCSV(QTableView *table) {
 
 }
 
-// TIMERS
 // ==================== first seq
-void MainWindow::timer_timeoutgo1() {
+void MainWindow::timer_timeoutgo1() {   // CHANGED HERE (TANAN FUNCTION SA TIMERS -- TAMAN UBOS)
     ui->go1->display(cGo);
     if (cGo >= 1) {
         ui->labelv1->setStyleSheet("QLabel {background-color: #34cb5a;border-radius: 5px;color: white;}");
@@ -291,14 +290,16 @@ void MainWindow::timer_timewait() {
                 cStop2 = 4;
             }
             ui->stop2->display(wait);
+            brunw1 = 1;
     } else {
+        brunw1 = 0;
             wait = 5;
             timerw->stop();
             ui->stop2->display(0);
 
             if (classifierSelect == 0) {
 
-                timers->start(1000); // CHANGED HERE
+                timers->start(1000);
             } else {
                 if (bus_low == 1) {
                     ui->est_go2->display(19); cGo2 = 19; timer2->start(1000);
@@ -382,7 +383,9 @@ void MainWindow::timer_timewait2() {
             cStop3 = 4;
         }
         ui->stop3->display(wait2);
+        brunw2 = 1;
     } else {
+        brunw2 = 0;
             wait2 = 5;
             timerw2->stop();
             ui->stop3->display(0);
@@ -473,7 +476,9 @@ void MainWindow::timer_timewait3() {
                 cStop4 = 4;
             }
             ui->stop4->display(wait3);
+            brunw3 = 1;
     } else {
+        brunw3 = 0;
             wait3 = 5;
             timerw3->stop();
             ui->stop4->display(0);
@@ -564,7 +569,9 @@ void MainWindow::timer_timewait4() {
                 cStop = 4;
             }
             ui->stop1->display(wait4);
+            brunw4 = 1;
     } else {
+        brunw4 = 0;
             wait4 = 5;
             timerw4->stop();
             ui->stop1->display(0);
@@ -649,11 +656,13 @@ void MainWindow::timer_ttimewait() {
         ui->wait1_t->display(twait1);
         ui->labelv1_t->setStyleSheet("QLabel {background-color: #eb8947;border-radius: 5px;}");
         ui->arrDown->hide();
+        trunw1 = 1;
         if (twait1 == 4) {
             tStop2 = 4;
         }
         ui->stop2_t->display(twait1);
     } else {
+        trunw1 = 0;
         twait1 = 5;
         ttimerw->stop();
         ui->stop2_t->display(0);
@@ -744,7 +753,9 @@ void MainWindow::timer_ttimewait2() {
             tStop3 = 4;
         }
         ui->stop3_t->display(twait2);
+        trunw2 = 1;
     } else {
+        trunw2 = 0;
         twait2 = 5;
         ttimerw2->stop();
         ui->stop3_t->display(0);
@@ -832,7 +843,9 @@ void MainWindow::timer_ttimewait3() {
             tStop1 = 4;
         }
         ui->stop1_t->display(twait3);
+        trunw3 = 1;
     } else {
+        trunw3 = 0;
         twait3 = 5;
         ttimerw3->stop();
         ui->stop1_t->display(0);
@@ -873,7 +886,6 @@ void MainWindow::timer_ttimestop3() {
 
     }
     if (tStop3 >= 1) {
-        trun3 = 0;
         ui->labelv3_t->setStyleSheet("QLabel {background-color: #dd3c3c;border-radius: 5px;}");
     } else {
         if (classifierSelect == 0) {
@@ -885,7 +897,6 @@ void MainWindow::timer_ttimestop3() {
     }
     tStop3--;
 }
-
 
 // ----------------------------------- COPY PASTE ENDS HERE!  ----------------------------------------------
 
@@ -1123,7 +1134,7 @@ void MainWindow::stopAllB() {
     timers3->stop(); ui->stop3->display(0); timers4->stop(); ui->stop4->display(0);
 }
 
-void MainWindow::on_actionPlay_triggered()
+void MainWindow::on_actionPlay_triggered()  // CHANGED HERE
 {
 
     if (click == 0) {
@@ -1150,20 +1161,59 @@ void MainWindow::on_actionPlay_triggered()
 //                    timer->start(1000); timers2->start(1000); timers3->start(1000); timers4->start(1000);
 //                    stopTrig = 0;
 //                } else
-                    if (pauseTrig == 1){
-                    if (brun1 == 1) {
-                        timer->start(1000); timers2->start(1000); timers3->start(1000); timers4->start(1000);
-                        timers->stop();
-                    } else if (brun2 == 1) {
-                        timers->start(1000); timer2->start(1000); timers3->start(1000); timers4->start(1000);
-                        timers2->stop();
-                    } else if (brun3 == 1) {
-                        timers->start(1000); timers2->start(1000); timer3->start(1000); timers4->start(1000);
-                        timers3->stop();
-                    } else if (brun4 == 1) {
-                        timers->start(1000); timers2->start(1000); timers3->start(1000); timer4->start(1000);
-                        timers4->stop();
+                if (pauseTrig == 1){
+
+                    if (classifierSelect == 1) {
+                        if (brun1 == 1) {
+                            timer->start(1000); timers2->stop(); timers3->stop(); timers4->stop();
+                            ui->stop2->display(199); ui->stop3->display(199); ui->stop4->display(199); timers->stop();
+                        } else if (brunw1 == 1) {
+                            timerw->start(1000); timers2->start(1000); timers3->stop(); timers4->stop();
+                            ui->stop3->display(199); ui->stop4->display(199);
+                        } else if (brun2 == 1) {
+                            timer2->start(1000); timers->stop(); timers3->stop(); timers4->stop();
+                            ui->stop1->display(199); ui->stop3->display(199); ui->stop4->display(199); timers2->stop();
+                        } else if (brunw2 == 1) {
+                            timerw2->start(1000); timers3->start(1000); timers4->stop(); timers->stop();
+                            ui->stop4->display(199); ui->stop1->display(199);
+                        } else if (brun3 == 1) {
+                            timer3->start(1000); timers2->stop(); timers->stop(); timers4->stop();
+                            ui->stop2->display(199); ui->stop1->display(199); ui->stop4->display(199); timers3->stop();
+                        } else if (brunw3 == 1) {
+                            timerw3->start(1000); timers4->start(1000); timers->stop(); timers2->stop();
+                            ui->stop1->display(199); ui->stop2->display(199);
+                        } else if (brun4 == 1) {
+                            timer4->start(1000); timers2->stop(); timers3->stop(); timers->stop();
+                            ui->stop2->display(199); ui->stop3->display(199); ui->stop1->display(199); timers4->stop();
+                        } else if (brunw4 == 1) {
+                            timerw4->start(1000); timers->start(1000); timers2->stop(); timers3->stop();
+                            ui->stop2->display(199); ui->stop3->display(199);
+                        }
+
+                    } else {
+                        if (brun1 == 1) {
+                            timer->start(1000); timers2->start(1000); timers3->start(1000); timers4->start(1000);
+                            timers->stop();
+                        } else if (brunw1 == 1) {
+                            timerw->start(1000); timers2->start(1000); timers3->start(1000); timers4->start(1000);
+                        } else if (brun2 == 1) {
+                            timer2->start(1000); timers->start(1000); timers3->start(1000); timers4->start(1000);
+                            timers2->stop();
+                        } else if (brunw2 == 1) {
+                            timerw2->start(1000); timers->start(1000); timers3->start(1000); timers4->start(1000);
+                        } else if (brun3 == 1) {
+                            timer3->start(1000); timers->start(1000); timers2->start(1000); timers4->start(1000);
+                            timers3->stop();
+                        } else if (brunw3 == 1) {
+                            timerw3->start(1000); timers->start(1000); timers2->start(1000); timers4->start(1000);
+                        } else if (brun4 == 1) {
+                            timer4->start(1000); timers->start(1000); timers2->start(1000); timers3->start(1000);
+                            timers4->stop();
+                        } else if (brunw4 == 1) {
+                            timerw4->start(1000); timers->start(1000); timers2->start(1000); timers3->start(1000);
+                        }
                     }
+
                 } else {
                     timerValues();
                     timer->start(1000); timers2->start(1000); timers3->start(1000); timers4->start(1000); // Boxed
@@ -1185,17 +1235,47 @@ void MainWindow::on_actionPlay_triggered()
 //                    ttimer->start(1000); ttimers2->start(1000); ttimers3->start(1000);
 //                    stopTrig = 0;
 //                } else
-                    if (pauseTrig == 1) {
-                    if (trun1 == 1) {
-                        ttimer->start(1000); ttimers2->start(1000); ttimers3->start(1000);
-                        ttimers->stop();
-                    } else if (trun2 == 1) {
-                        ttimers->start(1000); ttimer2->start(1000); ttimers3->start(1000);
-                        ttimers2->stop();
-                    } else if (trun3 == 1) {
-                        ttimers->start(1000); ttimers2->start(1000); ttimer3->start(1000);
-                        ttimers3->stop();
+                if (pauseTrig == 1) {
+
+                    if (classifierSelect == 1) {
+                        if (trun1 == 1) {
+                            ttimer->start(1000); ttimers2->stop(); ttimers3->stop();
+                            ui->stop2_t->display(199); ui->stop3_t->display(199); ttimers->stop();
+                        } else if (trunw1 == 1) {
+                            ttimerw->start(1000); ttimers2->start(1000); ttimers3->stop();
+                            ui->stop3_t->display(199);
+                        } else if (trun2 == 1) {
+                            ttimer2->start(1000); ttimers->start(1000); ttimers3->stop();
+                            ui->stop1_t->display(199); ui->stop3_t->display(199); ttimers2->stop();
+                        } else if (trunw2 == 1) {
+                            ttimerw2->start(1000); ttimers3->start(1000); ttimers->stop();
+                            ui->stop1_t->display(199);
+                        } else if (trun3 == 1) {
+                            ttimer3->start(1000); ttimers->start(1000); ttimers2->stop();
+                            ui->stop2_t->display(199); ui->stop1_t->display(199); ttimers3->stop();
+                        } else if (trunw3 == 1) {
+                            ttimerw3->start(1000); ttimers->start(1000); ttimers2->stop();
+                            ui->stop2_t->display(199);
+                        }
+                    } else {
+                        if (trun1 == 1) {
+                            ttimer->start(1000); ttimers2->start(1000); ttimers3->start(1000);
+                            ttimers->stop();
+                        } else if (trunw1 == 1) {
+                            ttimerw->start(1000); ttimers2->start(1000); ttimers3->start(1000);
+                        } else if (trun2 == 1) {
+                            ttimer2->start(1000); ttimers->start(1000); ttimers3->start(1000);
+                            ttimers2->stop();
+                        } else if (trunw2 == 1) {
+                            ttimerw2->start(1000); ttimers->start(1000); ttimers3->start(1000);
+                        } else if (trun3 == 1) {
+                            ttimer3->start(1000); ttimers->start(1000); ttimers2->start(1000);
+                            ttimers3->stop();
+                        } else if (trunw3 == 1) {
+                            ttimerw3->start(1000); ttimers->start(1000); ttimers2->start(1000);
+                        }
                     }
+
                 } else {
                     timerValuesT();
                     ttimer->start(1000); ttimers2->start(1000); ttimers3->start(1000); // T
@@ -1293,10 +1373,12 @@ void MainWindow::on_actionStop_triggered()
     stopTrig = 1;
 }
 
-void MainWindow::on_actionOpen_triggered()
+void MainWindow::on_actionOpen_triggered()  // CHANGED HERE
 {
     if (playing == 1) {
-        QMessageBox::information(this, "Warning!", "Please press the Stop Button before changing intersections.");
+        QMessageBox::information(this, "Press Stop Button!", "Please press the Stop Button before changing intersections.");
+    } else if (pauseTrig == 1) {
+        QMessageBox::information(this, "Press Stop Button!", "Videos should be Stopped in order to switch intersections.");
     } else if (playing == 0 && click > 0) {
         ui->interOption->show();
     }
@@ -1305,20 +1387,18 @@ void MainWindow::on_actionOpen_triggered()
     }
 }
 
-void MainWindow::on_selectInt_clicked()
+void MainWindow::on_selectInt_clicked() // CHANGED HERE
 {
+    activate_areas_legend = 0;
     vidCount = 0; checkInt = 0; ifT = 0; ifBox = 0;
     ui->arrDown->hide(); ui->arrLeft->hide(); ui->arrRight->hide(); ui->arrUp->hide();
 
     if (ui->radioTjunc->isChecked()) {
-        emit sendEnableTjunctionClassifier();
         ui->src1->show(); ui->src2->show(); ui->src3->show(); ui->src4->hide();
         ui->labelv1->hide();ui->labelv2->hide();ui->labelv3->hide(); ui->labelv4->hide();
         ui->labelv1_t->show(); ui->labelv2_t->show(); ui->labelv3_t->show();
         ui->viewJunc4->hide();
-        ui->v1_total_area->setText(QString::number(v1_areat));
-        ui->v2_total_area->setText(QString::number(v2_areat));
-        ui->v3_total_area->setText(QString::number(v3_areat));
+
         ui->v4_total_area->clear();
         ui->v4_total_area->setDisabled(true);
         ui->leg_v4name_3->show();
@@ -1344,16 +1424,11 @@ void MainWindow::on_selectInt_clicked()
         QMessageBox::information(this, "Success!", "T - junction has been selected!");
 
     } else if (ui->radioBoxed->isChecked()) {
-        emit sendEnableBoxjunctionClassifier();
         ui->src1->show(); ui->src2->show(); ui->src3->show(); ui->src4->show();
         ui->labelv1->show();ui->labelv2->show();ui->labelv3->show(); ui->labelv4->show();
         ui->labelv1_t->hide(); ui->labelv2_t->hide(); ui->labelv3_t->hide();
         ui->viewJunc4->show();
         //ui->info4->show();
-        ui->v1_total_area->setText(QString::number(v1_area));
-        ui->v2_total_area->setText(QString::number(v2_area));
-        ui->v3_total_area->setText(QString::number(v3_area));
-        ui->v4_total_area->setText(QString::number(v4_area));
 
         ui->leg_v4name_3->hide();
         ui->leg_v4name_4->hide();
@@ -1514,9 +1589,29 @@ void MainWindow::receiveFrame(ProcessedFrame *outputFrames)
          if(flagInfoToggle == true)
          {
 
-             ui->countFW->display(outputFrames->numberOfFW[0]);
-             ui->countMT->display(outputFrames->numberOfMT[0]);
-             ui->countTR->display(outputFrames->numberOfTR[0]);
+             if (classifierSelect == 0) {    // CHANGED HERE
+
+                 outputFrames->numberOfFW[0] = 0;
+                 outputFrames->numberOfMT[0] = 0;
+                 outputFrames->numberOfTR[0] = 0;
+
+             } else {
+
+                 if (ui->classifierFW->isChecked() == false) {
+                     outputFrames->numberOfFW[0] = 0;
+                 }
+                 if (ui->classifierMT->isChecked() == false) {
+                     outputFrames->numberOfMT[0] = 0;
+                 }
+                 if (ui->classifierTR->isChecked() == false) {
+                     outputFrames->numberOfTR[0] = 0;
+                 }
+
+                 ui->countFW->display(outputFrames->numberOfFW[0]);
+                 ui->countMT->display(outputFrames->numberOfMT[0]);
+                 ui->countTR->display(outputFrames->numberOfTR[0]);
+             }
+
          }
          if(ifBox == 1){
              if(t_seconds == 5){
@@ -1567,9 +1662,29 @@ void MainWindow::receiveFrame(ProcessedFrame *outputFrames)
         if(flagInfoToggle == true)
         {
 
-            ui->countFW_2->display(outputFrames->numberOfFW[1]);
-            ui->countMT_2->display(outputFrames->numberOfMT[1]);
-            ui->countTR_2->display(outputFrames->numberOfTR[1]);
+            if (classifierSelect == 0) {    // CHANGED HERE
+
+                outputFrames->numberOfFW[1] = 0;
+                outputFrames->numberOfMT[1] = 0;
+                outputFrames->numberOfTR[1] = 0;
+
+            } else {
+
+                if (ui->classifierFW->isChecked() == false) {
+                    outputFrames->numberOfFW[1] = 0;
+                }
+                if (ui->classifierMT->isChecked() == false) {
+                    outputFrames->numberOfMT[1] = 0;
+                }
+                if (ui->classifierTR->isChecked() == false) {
+                    outputFrames->numberOfTR[1] = 0;
+                }
+
+                ui->countFW_2->display(outputFrames->numberOfFW[1]);
+                ui->countMT_2->display(outputFrames->numberOfMT[1]);
+                ui->countTR_2->display(outputFrames->numberOfTR[1]);
+            }
+
         }
         if(ifBox == 1){
             if(t_seconds == 5){
@@ -1615,9 +1730,29 @@ void MainWindow::receiveFrame(ProcessedFrame *outputFrames)
         if(flagInfoToggle == true)
         {
 
-            ui->countFW_3->display(outputFrames->numberOfFW[2]);
-            ui->countMT_3->display(outputFrames->numberOfMT[2]);
-            ui->countTR_3->display(outputFrames->numberOfTR[2]);
+            if (classifierSelect == 0) {    // CHANGED HERE
+
+                outputFrames->numberOfFW[2] = 0;
+                outputFrames->numberOfMT[2] = 0;
+                outputFrames->numberOfTR[2] = 0;
+
+            } else {
+
+                if (ui->classifierFW->isChecked() == false) {
+                    outputFrames->numberOfFW[2] = 0;
+                }
+                if (ui->classifierMT->isChecked() == false) {
+                    outputFrames->numberOfMT[2] = 0;
+                }
+                if (ui->classifierTR->isChecked() == false) {
+                    outputFrames->numberOfTR[2] = 0;
+                }
+
+                ui->countFW_3->display(outputFrames->numberOfFW[2]);
+                ui->countMT_3->display(outputFrames->numberOfMT[2]);
+                ui->countTR_3->display(outputFrames->numberOfTR[2]);
+            }
+
         }
         if(ifBox == 1){
             if(t_seconds == 5){
@@ -1662,9 +1797,29 @@ void MainWindow::receiveFrame(ProcessedFrame *outputFrames)
         if(flagInfoToggle == true)
         {
 
-            ui->countFW_4->display(outputFrames->numberOfFW[3]);
-            ui->countMT_4->display(outputFrames->numberOfMT[3]);
-            ui->countTR_4->display(outputFrames->numberOfTR[3]);
+            if (classifierSelect == 0) {    // CHANGED HERE
+
+                outputFrames->numberOfFW[3] = 0;
+                outputFrames->numberOfMT[3] = 0;
+                outputFrames->numberOfTR[3] = 0;
+
+            } else {
+
+                if (ui->classifierFW->isChecked() == false) {
+                    outputFrames->numberOfFW[3] = 0;
+                }
+                if (ui->classifierMT->isChecked() == false) {
+                    outputFrames->numberOfMT[3] = 0;
+                }
+                if (ui->classifierTR->isChecked() == false) {
+                    outputFrames->numberOfTR[3] = 0;
+                }
+
+                ui->countFW_4->display(outputFrames->numberOfFW[3]);
+                ui->countMT_4->display(outputFrames->numberOfMT[3]);
+                ui->countTR_4->display(outputFrames->numberOfTR[3]);
+            }
+
         }
         if(ifBox == 1){
             if(t_seconds == 5){
@@ -1719,28 +1874,64 @@ void MainWindow::on_sim1_toggled(bool checked)
    ui->statusBar->showMessage("Sim...");
 }
 
-void MainWindow::on_sim1_clicked(bool checked)
+void MainWindow::on_sim1_clicked(bool checked) // CHANGED HERE
 {
     boolProcessedView = !boolProcessedView;
     emit sendToggleDebug();
 
     if(flagInfoToggle == true){
+        //ui->submitArea->hide();
+//        ui->minSpinBox->hide();
+//        ui->maxSpinBox->hide();
+//        ui->verticalSlider->hide();
+//        ui->verticalSlider_2->hide();
+//        ui->radioFW->hide();
+//        ui->radioMT->hide();
+//        ui->radioTR->hide();
+//        ui->label_3->hide();
+//        ui->label_4->hide();
+//        ui->setMinMax->hide();
 
+        activate_debug_btn = 0;
 
         flagInfoToggle = false;
     } else {
 
         //ui->submitArea->show();
+//        ui->minSpinBox->show();
+//        ui->maxSpinBox->show();
+//        ui->verticalSlider->show();
+//        ui->verticalSlider_2->show();
+//        ui->radioFW->show();
+//        ui->radioMT->show();
+//        ui->radioTR->show();
+//        ui->label_3->show();
+//        ui->label_4->show();
+//        ui->setMinMax->show();
+
+        activate_debug_btn = 1;
 
         flagInfoToggle = true;
     }
     if (ifBox == 1) {
+
+        if (activate_areas_legend == 1) {
+            ui->v1_total_area->setText(QString::number(v1_area));   // CHANGED HERE
+            ui->v2_total_area->setText(QString::number(v2_area));
+            ui->v3_total_area->setText(QString::number(v3_area));
+            ui->v4_total_area->setText(QString::number(v4_area));
+        }
+
+
         ui->v1_total_area->setEnabled(true);
         ui->v2_total_area->setEnabled(true);
         ui->v3_total_area->setEnabled(true);
         ui->v4_total_area->setEnabled(true);
         if(flagInfoToggle == true){
-
+            ui->v1_total_area->setReadOnly(false);
+            ui->v2_total_area->setReadOnly(false);
+            ui->v3_total_area->setReadOnly(false);
+            ui->v4_total_area->setReadOnly(false);
             ui->countFW->show();    ui->countMT->show();    ui->countTR->show();
             ui->countFW_2->show();  ui->countMT_2->show();  ui->countTR_2->show();
             ui->countFW_3->show();  ui->countMT_3->show();  ui->countTR_3->show();
@@ -1748,6 +1939,10 @@ void MainWindow::on_sim1_clicked(bool checked)
             ui->counts->setStyleSheet("QPushButton {background-color: #cbcbb3;font-size: 16px; font: bold; color: #4d79ff;border-radius: 5px;border: 2px solid #4d79ff;}");
         }else{
 
+            ui->v1_total_area->setText(" ");   // CHANGED HERE
+            ui->v2_total_area->setText(" ");
+            ui->v3_total_area->setText(" ");
+            ui->v4_total_area->setText(" ");
 
             ui->v1_total_area->setReadOnly(true);
             ui->v2_total_area->setReadOnly(true);
@@ -1763,12 +1958,28 @@ void MainWindow::on_sim1_clicked(bool checked)
     } else if (ifT == 1) {
         if(flagInfoToggle == true){
 
+            if (activate_areas_legend == 1) {
+                ui->v1_total_area->setText(QString::number(v1_areat));  // CHANGED HERE
+                ui->v2_total_area->setText(QString::number(v2_areat));
+                ui->v3_total_area->setText(QString::number(v3_areat));
+            }
+
+
+            ui->v1_total_area->setReadOnly(false);
+            ui->v2_total_area->setReadOnly(false);
+            ui->v3_total_area->setReadOnly(false);
+            ui->v4_total_area->setReadOnly(true);
             ui->countFW->show();    ui->countMT->show();    ui->countTR->show();
             ui->countFW_2->show();  ui->countMT_2->show();  ui->countTR_2->show();
             ui->countFW_3->show();  ui->countMT_3->show();  ui->countTR_3->show();
             ui->countFW_4->hide();  ui->countMT_4->hide();  ui->countTR_4->hide();
             ui->counts->setStyleSheet("QPushButton {background-color: #cbcbb3;font-size: 16px; font: bold; color: #4d79ff;border-radius: 5px;border: 2px solid #4d79ff;}");
         }else{
+
+            ui->v1_total_area->setText(" ");  // CHANGED HERE
+            ui->v2_total_area->setText(" ");
+            ui->v3_total_area->setText(" ");
+
             ui->v1_total_area->setReadOnly(true);
             ui->v2_total_area->setReadOnly(true);
             ui->v3_total_area->setReadOnly(true);
@@ -1932,14 +2143,16 @@ void MainWindow::on_selectInt_2_clicked()
 //    emit sendSetupCFG(cfg);
 //    ui->classifier->close();
 
-    if ((ui->classifierFW->isChecked() || ui->classifierTR->isChecked() || ui->classifierMT->isChecked())) {
+      // CHANGED HERE!
+    if (ui->classifierFW->isChecked() || ui->classifierMT->isChecked() || ui->classifierTR->isChecked()) {
         classifierSelect = 1;
-        on_actionPause_triggered();
-        QMessageBox::information(this, "Play!", "Press play button.");
     } else {
         classifierSelect = 0;
+        ui->countFW->display(0); ui->countFW_2->display(0); ui->countFW_3->display(0); ui->countFW_4->display(0);
+        ui->countMT->display(0); ui->countMT_2->display(0); ui->countMT_3->display(0); ui->countMT_4->display(0);
+        ui->countTR->display(0); ui->countTR_2->display(0); ui->countTR_3->display(0); ui->countTR_4->display(0);
         on_actionStop_triggered();
-        QMessageBox::information(this, "Play!", "Press play button.");
+        QMessageBox::information(this, "No Classifier has been Selected!", "Press Play button.");
     }
 
 }
@@ -2113,6 +2326,7 @@ void MainWindow::on_actionOpen_2_triggered()
         myFile.close();
         emit sendReceiveFlagROI();
         emit sendROI(*jpROI);
+        activate_areas_legend = 1;  //CHANGED HERE
     }
 
 }
@@ -2125,180 +2339,194 @@ void MainWindow::receiveDensityUpdateRequest()
             if(ifBox == 1){
 
 
-                if(total_area_l1 <= v1_area * LOW_PERCENT){
-                    sprintf(buff,"V1 - SNR (Cebu): LOW (%.0f%)",(float)((float)total_area_l1/v1_area)*100);
-                    ui->listWidget->item(0)->setText(QString(buff));
+                if (classifierSelect == 0) {    // CHANGED HERE
+                    ui->listWidget->item(0)->setText("V1 - SNR (Cebu): ");
+                    ui->listWidget->item(1)->setText("V2 - SNR (Terminal): ");
+                    ui->listWidget->item(2)->setText("V3 - SNR (CDU): ");
+                    ui->listWidget->item(3)->setText("V4 - SNR (Parkmall): ");
+                } else {
+                    if(total_area_l1 <= v1_area * LOW_PERCENT){
+                        sprintf(buff,"V1 - SNR (Cebu): LOW (%.0f%)",(float)((float)total_area_l1/v1_area)*100);
+                        ui->listWidget->item(0)->setText(QString(buff));
 
-                    //ui->est_go1->display(19);
-                    cebu_low = 1;
-                    cebu_mod = 0;
-                    cebu_high = 0;
-                }else if(total_area_l1 > v1_area * LOW_PERCENT && total_area_l1 <= v1_area * MOD_PERCENT){
-                    sprintf(buff,"V1 - SNR (Cebu): MOD (%.0f%)",(float)((float)total_area_l1/v1_area)*100);
-                    ui->listWidget->item(0)->setText(QString(buff));
+                        //ui->est_go1->display(19);
+                        cebu_low = 1;
+                        cebu_mod = 0;
+                        cebu_high = 0;
+                    }else if(total_area_l1 > v1_area * LOW_PERCENT && total_area_l1 <= v1_area * MOD_PERCENT){
+                        sprintf(buff,"V1 - SNR (Cebu): MOD (%.0f%)",(float)((float)total_area_l1/v1_area)*100);
+                        ui->listWidget->item(0)->setText(QString(buff));
 
-                    //ui->est_go1->display(27);
-                    cebu_low = 0;
-                    cebu_high = 0;
-                    cebu_mod = 1;
-                }else if(total_area_l1 > v1_area * MOD_PERCENT){
-                    sprintf(buff,"V1 - SNR (Cebu): HIGH (%.0f%)",(float)((float)total_area_l1/v1_area)*100);
-                    ui->listWidget->item(0)->setText(QString(buff));
+                        //ui->est_go1->display(27);
+                        cebu_low = 0;
+                        cebu_high = 0;
+                        cebu_mod = 1;
+                    }else if(total_area_l1 > v1_area * MOD_PERCENT){
+                        sprintf(buff,"V1 - SNR (Cebu): HIGH (%.0f%)",(float)((float)total_area_l1/v1_area)*100);
+                        ui->listWidget->item(0)->setText(QString(buff));
 
-                    //ui->est_go1->display(51);
-                    cebu_high = 1;
-                    cebu_low = 0;
-                    cebu_mod = 0;
+                        //ui->est_go1->display(51);
+                        cebu_high = 1;
+                        cebu_low = 0;
+                        cebu_mod = 0;
+                    }
+
+                    if(total_area_l2 < v2_area * LOW_PERCENT){
+                        sprintf(buff,"V2 - SNR (Terminal): LOW (%.2f%)",(float)((float)total_area_l2/v2_area)*100);
+                        ui->listWidget->item(1)->setText(QString(buff));
+                        //ui->est_go2->display(19);
+
+                        bus_low = 1;
+                        bus_mod = 0;
+                        bus_high = 0;
+                    }else if(total_area_l2 > v2_area * LOW_PERCENT && total_area_l2 < v2_area * MOD_PERCENT){
+                         sprintf(buff,"V2 - SNR (Terminal): MOD (%.2f%)",(float)((float)total_area_l2/v2_area)*100);
+                        ui->listWidget->item(1)->setText(QString(buff));
+                        //ui->est_go2->display(27);
+
+                        bus_low = 0;
+                        bus_mod = 1;
+                        bus_high = 0;
+                    }else if(total_area_l2  > v2_area * MOD_PERCENT){
+                         sprintf(buff,"V2 - SNR (Terminal): HIGH (%.2f%)",(float)((float)total_area_l2/v2_area)*100);
+                        ui->listWidget->item(1)->setText(QString(buff));
+                        //ui->est_go2->display(51);
+                        bus_low = 0;
+                        bus_mod = 0;
+                        bus_high = 1;
+                    }
+
+                    if((total_area_l3 ) < v3_area * LOW_PERCENT){
+                        sprintf(buff,"V3 - SNR (CDU): LOW (%.2f%)",(float)((float)total_area_l3/v3_area)*100 );
+                        ui->listWidget->item(2)->setText(QString(buff));
+
+                        //ui->est_go3->display(19);
+                        cdu_mod = 0;
+                        cdu_high = 0;
+                        cdu_low = 1;
+                    }else if((total_area_l3 ) > v3_area * LOW_PERCENT && total_area_l3 < v3_area * MOD_PERCENT){
+                        sprintf(buff,"V3 - SNR (CDU): MOD (%.2f%)",(float)((float)total_area_l3/v3_area)*100 );
+                        ui->listWidget->item(2)->setText(QString(buff));
+
+                        //ui->est_go3->display(27);
+                        cdu_low = 0;
+                        cdu_mod = 1;
+                        cdu_high = 0;
+                    }else if((total_area_l3 ) > v3_area * MOD_PERCENT){
+                        sprintf(buff,"V3 - SNR (CDU): HIGH (%.2f%)",(float)((float)total_area_l3/v3_area)*100 );
+                        ui->listWidget->item(2)->setText(QString(buff));
+
+                        //ui->est_go3->display(51);
+                        cdu_high = 1;
+                        cdu_mod = 0;
+                        cdu_low = 0;
+                    }
+
+                    if((total_area_l4 ) < v4_area * LOW_PERCENT){
+                        sprintf(buff,"V4 - SNR (Parkmall): LOW (%.2f%)",(float)((float)total_area_l4/v4_area)*100 );
+                        ui->listWidget->item(3)->setText(QString(buff));
+
+                        //ui->est_go4->display(19);
+                        pmall_low = 1;
+                        pmall_mod = 0;
+                        pmall_high = 0;
+                    }else if((total_area_l4 ) > v4_area * LOW_PERCENT && total_area_l4 < v4_area * MOD_PERCENT){
+                        sprintf(buff,"V4 - SNR (Parkmall): MOD (%.2f%)",(float)((float)total_area_l4/v4_area)*100 );
+                        ui->listWidget->item(3)->setText(QString(buff));
+
+                        //ui->est_go4->display(27);
+                        pmall_mod = 1;
+                        pmall_high = 0;
+                        pmall_low = 0;
+                    }else if((total_area_l4 ) > v4_area * MOD_PERCENT){
+                        sprintf(buff,"V4 - SNR (Parkmall): HIGH (%.2f%)",(float)((float)total_area_l4/v4_area)*100 );
+                        ui->listWidget->item(3)->setText(QString(buff));
+
+                        //ui->est_go4->display(51);
+                        pmall_high = 1;
+                        pmall_low = 0;
+                        pmall_mod = 0;
+                    }
                 }
 
-                if(total_area_l2 < v2_area * LOW_PERCENT){
-                    sprintf(buff,"V2 - SNR (Terminal): LOW (%.0f%)",(float)((float)total_area_l2/v2_area)*100);
-                    ui->listWidget->item(1)->setText(QString(buff));
-                    //ui->est_go2->display(19);
-
-                    bus_low = 1;
-                    bus_mod = 0;
-                    bus_high = 0;
-                }else if(total_area_l2 > v2_area * LOW_PERCENT && total_area_l2 < v2_area * MOD_PERCENT){
-                     sprintf(buff,"V2 - SNR (Terminal): MOD (%.0f%)",(float)((float)total_area_l2/v2_area)*100);
-                    ui->listWidget->item(1)->setText(QString(buff));
-                    //ui->est_go2->display(27);
-
-                    bus_low = 0;
-                    bus_mod = 1;
-                    bus_high = 0;
-                }else if(total_area_l2  > v2_area * MOD_PERCENT){
-                     sprintf(buff,"V2 - SNR (Terminal): HIGH (%.0f%)",(float)((float)total_area_l2/v2_area)*100);
-                    ui->listWidget->item(1)->setText(QString(buff));
-                    //ui->est_go2->display(51);
-                    bus_low = 0;
-                    bus_mod = 0;
-                    bus_high = 1;
-                }
-
-                if((total_area_l3 ) < v3_area * LOW_PERCENT){
-                    sprintf(buff,"V3 - SNR (CDU): LOW (%.0f%)",(float)((float)total_area_l3/v3_area)*100 );
-                    ui->listWidget->item(2)->setText(QString(buff));
-
-                    //ui->est_go3->display(19);
-                    cdu_mod = 0;
-                    cdu_high = 0;
-                    cdu_low = 1;
-                }else if((total_area_l3 ) > v3_area * LOW_PERCENT && total_area_l3 < v3_area * MOD_PERCENT){
-                    sprintf(buff,"V3 - SNR (CDU): MOD (%.0f%)",(float)((float)total_area_l3/v3_area)*100 );
-                    ui->listWidget->item(2)->setText(QString(buff));
-
-                    //ui->est_go3->display(27);
-                    cdu_low = 0;
-                    cdu_mod = 1;
-                    cdu_high = 0;
-                }else if((total_area_l3 ) > v3_area * MOD_PERCENT){
-                    sprintf(buff,"V3 - SNR (CDU): HIGH (%.0f%)",(float)((float)total_area_l3/v3_area)*100 );
-                    ui->listWidget->item(2)->setText(QString(buff));
-
-                    //ui->est_go3->display(51);
-                    cdu_high = 1;
-                    cdu_mod = 0;
-                    cdu_low = 0;
-                }
-
-                if((total_area_l4 ) < v4_area * LOW_PERCENT){
-                    sprintf(buff,"V4 - SNR (Parkmall): LOW (%.0f%)",(float)((float)total_area_l4/v4_area)*100 );
-                    ui->listWidget->item(3)->setText(QString(buff));
-
-                    //ui->est_go4->display(19);
-                    pmall_low = 1;
-                    pmall_mod = 0;
-                    pmall_high = 0;
-                }else if((total_area_l4 ) > v4_area * LOW_PERCENT && total_area_l4 < v4_area * MOD_PERCENT){
-                    sprintf(buff,"V4 - SNR (Parkmall): MOD (%.0f%)",(float)((float)total_area_l4/v4_area)*100 );
-                    ui->listWidget->item(3)->setText(QString(buff));
-
-                    //ui->est_go4->display(27);
-                    pmall_mod = 1;
-                    pmall_high = 0;
-                    pmall_low = 0;
-                }else if((total_area_l4 ) > v4_area * MOD_PERCENT){
-                    sprintf(buff,"V4 - SNR (Parkmall): HIGH (%.0f%)",(float)((float)total_area_l4/v4_area)*100 );
-                    ui->listWidget->item(3)->setText(QString(buff));
-
-                    //ui->est_go4->display(51);
-                    pmall_high = 1;
-                    pmall_low = 0;
-                    pmall_mod = 0;
-                }
 
             } else {
 
-                if((total_area_l3 )  < v3_areat * LOW_PERCENT){
-                    sprintf(buff,"V2 PACIFIC (MCB): LOW (%.0f%)",(float)((float)total_area_l3/v3_areat)*100 );
-                    ui->listWidget->item(2)->setText(QString(buff));
+                if (classifierSelect == 0) {    // CHANGED HERE
+                    ui->listWidget->item(2)->setText("V3 PACIFIC (MCB): ");
+                    ui->listWidget->item(1)->setText("V2 PACIFIC (JPR): ");
+                    ui->listWidget->item(0)->setText("V1 PACIFIC (UNA): ");
+                } else {
+                    if((total_area_l3 )  < v3_areat * LOW_PERCENT){
+                        sprintf(buff,"V2 PACIFIC (MCB): LOW (%.2f%)",(float)((float)total_area_l3/v3_areat)*100 );
+                        ui->listWidget->item(2)->setText(QString(buff));
 
-                    //ui->est_go3->display(19);
-                    mcb_low = 1;
-                    mcb_high = 0;
-                    mcb_mod = 0;
-                }else if((total_area_l3 ) > v3_areat * LOW_PERCENT && total_area_l3 < v3_areat * MOD_PERCENT){
-                    sprintf(buff,"V2 PACIFIC (MCB): MOD (%.0f%)",(float)((float)total_area_l3/v3_areat)*100 );
-                    ui->listWidget->item(2)->setText(QString(buff));
+                        //ui->est_go3->display(19);
+                        mcb_low = 1;
+                        mcb_high = 0;
+                        mcb_mod = 0;
+                    }else if((total_area_l3 ) > v3_areat * LOW_PERCENT && total_area_l3 < v3_areat * MOD_PERCENT){
+                        sprintf(buff,"V3 PACIFIC (MCB): MOD (%.2f%)",(float)((float)total_area_l3/v3_areat)*100 );
+                        ui->listWidget->item(2)->setText(QString(buff));
 
-                    //ui->est_go3->display(19);
-                    mcb_mod = 1;
-                    mcb_low = 0;
-                    mcb_high = 0;
-                }else if((total_area_l3 ) > v3_areat * MOD_PERCENT){
-                    sprintf(buff,"V2 PACIFIC (MCB): HIGH (%.0f%)",(float)((float)total_area_l3/v3_areat)*100 );
-                    ui->listWidget->item(2)->setText(QString(buff));
+                        //ui->est_go3->display(19);
+                        mcb_mod = 1;
+                        mcb_low = 0;
+                        mcb_high = 0;
+                    }else if((total_area_l3 ) > v3_areat * MOD_PERCENT){
+                        sprintf(buff,"V3 PACIFIC (MCB): HIGH (%.2f%)",(float)((float)total_area_l3/v3_areat)*100 );
+                        ui->listWidget->item(2)->setText(QString(buff));
 
-                    mcb_high = 1;
-                    mcb_low = 0;
-                    mcb_mod = 0;
-                }
+                        mcb_high = 1;
+                        mcb_low = 0;
+                        mcb_mod = 0;
+                    }
 
-                if((total_area_l2 ) < v2_areat * LOW_PERCENT){
-                    sprintf(buff,"V2 PACIFIC (JPR): LOW (%.0f%)",(float)((float)total_area_l2/v2_areat)*100 );
-                    ui->listWidget->item(1)->setText(QString(buff));
+                    if((total_area_l2 ) < v2_areat * LOW_PERCENT){
+                        sprintf(buff,"V3 PACIFIC (JPR): LOW (%.2f%)",(float)((float)total_area_l2/v2_areat)*100 );
+                        ui->listWidget->item(1)->setText(QString(buff));
 
-                    jpr_low = 1;
-                    jpr_high = 0;
-                    jpr_mod = 0;
+                        jpr_low = 1;
+                        jpr_high = 0;
+                        jpr_mod = 0;
 
-                }else if((total_area_l2 ) > v2_areat * LOW_PERCENT && total_area_l2 < v2_areat *MOD_PERCENT){
-                    sprintf(buff,"V2 PACIFIC (JPR): MOD (%.0f%)",(float)((float)total_area_l2/v2_areat)*100 );
-                    ui->listWidget->item(1)->setText(QString(buff));
+                    }else if((total_area_l2 ) > v2_areat * LOW_PERCENT && total_area_l2 < v2_areat *MOD_PERCENT){
+                        sprintf(buff,"V2 PACIFIC (JPR): MOD (%.2f%)",(float)((float)total_area_l2/v2_areat)*100 );
+                        ui->listWidget->item(1)->setText(QString(buff));
 
-                    jpr_mod = 1;
-                    jpr_high = 0;
-                    jpr_low = 0;
-                }else if((total_area_l2 ) > v2_areat * MOD_PERCENT){
-                    sprintf(buff,"V2 PACIFIC (JPR): HIGH (%.0f%)",(float)((float)total_area_l2/v2_areat)*100 );
-                    ui->listWidget->item(1)->setText(QString(buff));
+                        jpr_mod = 1;
+                        jpr_high = 0;
+                        jpr_low = 0;
+                    }else if((total_area_l2 ) > v2_areat * MOD_PERCENT){
+                        sprintf(buff,"V2 PACIFIC (JPR): HIGH (%.2f%)",(float)((float)total_area_l2/v2_areat)*100 );
+                        ui->listWidget->item(1)->setText(QString(buff));
 
-                    jpr_high = 1;
-                    jpr_low = 0;
-                    jpr_mod = 0;
-                }
+                        jpr_high = 1;
+                        jpr_low = 0;
+                        jpr_mod = 0;
+                    }
 
-                if((total_area_l1 ) < v1_areat * LOW_PERCENT){
-                    sprintf(buff,"V1 PACIFIC (UNA): LOW (%.0f%)",(float)((float)total_area_l1/v1_areat)*100 );
-                    ui->listWidget->item(0)->setText(QString(buff));
+                    if((total_area_l1 ) < v1_areat * LOW_PERCENT){
+                        sprintf(buff,"V1 PACIFIC (UNA): LOW (%.2f%)",(float)((float)total_area_l1/v1_areat)*100 );
+                        ui->listWidget->item(0)->setText(QString(buff));
 
-                    una_low = 1;
-                    una_high = 0;
-                    una_mod = 0;
-                }else if((total_area_l1 ) > v1_areat * LOW_PERCENT && total_area_l1 < v1_areat * MOD_PERCENT){
-                    sprintf(buff,"V1 PACIFIC (UNA): MOD (%.0f%)",(float)((float)total_area_l1/v1_areat)*100 );
-                    ui->listWidget->item(0)->setText(QString(buff));
+                        una_low = 1;
+                        una_high = 0;
+                        una_mod = 0;
+                    }else if((total_area_l1 ) > v1_areat * LOW_PERCENT && total_area_l1 < v1_areat * MOD_PERCENT){
+                        sprintf(buff,"V1 PACIFIC (UNA): MOD (%.2f%)",(float)((float)total_area_l1/v1_areat)*100 );
+                        ui->listWidget->item(0)->setText(QString(buff));
 
-                    una_mod = 1;
-                    una_high = 0;
-                    una_low = 0;
-                }else if((total_area_l1 ) > v1_areat * MOD_PERCENT){
-                    sprintf(buff,"V1 PACIFIC (UNA): HIGH (%.0f%)",(float)((float)total_area_l1/v1_areat)*100 );
-                    ui->listWidget->item(0)->setText(QString(buff));
-                    una_low = 0;
-                    una_mod = 0;
-                    una_high = 1;
+                        una_mod = 1;
+                        una_high = 0;
+                        una_low = 0;
+                    }else if((total_area_l1 ) > v1_areat * MOD_PERCENT){
+                        sprintf(buff,"V1 PACIFIC (UNA): HIGH (%.2f%)",(float)((float)total_area_l1/v1_areat)*100 );
+                        ui->listWidget->item(0)->setText(QString(buff));
+                        una_low = 0;
+                        una_mod = 0;
+                        una_high = 1;
+                    }
                 }
             }
 
