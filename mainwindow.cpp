@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // For Database
 
     mydb = QSqlDatabase::addDatabase("QSQLITE");
-    mydb.setDatabaseName("C:/Users/Randolph D/Traffic_GUI2/db/trafficdb.sqlite");
+    mydb.setDatabaseName("C:/Users/ERDT Research/Desktop/Traffic_GUI2/db/trafficdb.sqlite");
 
     tData = new QTimer(this);
     connect(tData, SIGNAL(timeout()), this, SLOT(timer_data()));
